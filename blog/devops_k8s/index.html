@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>云原生之k8s入门 | ᕕ( ᐛ )ᕗ xiaoli&#39;s blog</title>
+<meta name="title" content="云原生之k8s入门" />
+<meta name="description" content="参照尚硅谷的《云原生Java架构师的第一课K8s&#43;Docker&#43;KubeSphere&#43;DevOps》" />
+<meta name="keywords" content="kubernetes," />
+
+
+<meta property="og:title" content="云原生之k8s入门" />
+<meta property="og:description" content="参照尚硅谷的《云原生Java架构师的第一课K8s&#43;Docker&#43;KubeSphere&#43;DevOps》" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://zerlina-ysl.github.io/blog/devops_k8s/" /><meta property="article:section" content="blog" />
+<meta property="article:published_time" content="2023-02-22T20:16:40+08:00" />
+<meta property="article:modified_time" content="2023-02-22T20:16:40+08:00" />
+
+
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="云原生之k8s入门"/>
+<meta name="twitter:description" content="参照尚硅谷的《云原生Java架构师的第一课K8s&#43;Docker&#43;KubeSphere&#43;DevOps》"/>
+
+
+
+<meta itemprop="name" content="云原生之k8s入门">
+<meta itemprop="description" content="参照尚硅谷的《云原生Java架构师的第一课K8s&#43;Docker&#43;KubeSphere&#43;DevOps》"><meta itemprop="datePublished" content="2023-02-22T20:16:40+08:00" />
+<meta itemprop="dateModified" content="2023-02-22T20:16:40+08:00" />
+<meta itemprop="wordCount" content="1977">
+<meta itemprop="keywords" content="kubernetes," />
+<meta name="referrer" content="no-referrer-when-downgrade" />
+
+  <style>
+  body {
+    font-family: Verdana, sans-serif;
+    margin: auto;
+    padding: 20px;
+    max-width: 720px;
+    text-align: left;
+    background-color: #fff;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.5;
+    color: #444;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  strong,
+  b {
+    color: #222;
+  }
+
+  a {
+    color: #3273dc;
+     
+  }
+
+  .title {
+    text-decoration: none;
+    border: 0;
+  }
+
+  .title span {
+    font-weight: 400;
+  }
+
+  nav a {
+    margin-right: 10px;
+  }
+
+  textarea {
+    width: 100%;
+    font-size: 16px;
+  }
+
+  input {
+    font-size: 16px;
+  }
+
+  content {
+    line-height: 1.6;
+  }
+
+  table {
+    width: 100%;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  code {
+    padding: 2px 5px;
+    background-color: #f2f2f2;
+  }
+
+  pre code {
+    color: #222;
+    display: block;
+    padding: 20px;
+    white-space: pre-wrap;
+    font-size: 14px;
+    overflow-x: auto;
+  }
+
+  div.highlight pre {
+    background-color: initial;
+    color: initial;
+  }
+
+  div.highlight code {
+    background-color: unset;
+    color: unset;
+  }
+
+  blockquote {
+    border-left: 1px solid #999;
+    color: #222;
+    padding-left: 20px;
+    font-style: italic;
+  }
+
+  footer {
+    padding: 25px;
+    text-align: center;
+  }
+
+  .helptext {
+    color: #777;
+    font-size: small;
+  }
+
+  .errorlist {
+    color: #eba613;
+    font-size: small;
+  }
+
+   
+  ul.blog-posts {
+    list-style-type: none;
+    padding: unset;
+  }
+
+  ul.blog-posts li {
+    display: flex;
+  }
+
+  ul.blog-posts li span {
+    flex: 0 0 130px;
+  }
+
+  ul.blog-posts li a:visited {
+    color: #8b6fcb;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    body {
+      background-color: #333;
+      color: #ddd;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    strong,
+    b {
+      color: #eee;
+    }
+
+    a {
+      color: #8cc2dd;
+    }
+
+    code {
+      background-color: #777;
+    }
+
+    pre code {
+      color: #ddd;
+    }
+
+    blockquote {
+      color: #ccc;
+    }
+
+    textarea,
+    input {
+      background-color: #252525;
+      color: #ddd;
+    }
+
+    .helptext {
+      color: #aaa;
+    }
+  }
+
+</style>
+
+</head>
+
+<body>
+  <header><a href="/" class="title">
+  <h2>ᕕ( ᐛ )ᕗ xiaoli&#39;s blog</h2>
+</a>
+<nav><a href="/">Home</a>
+
+<a href="/diary/">diary</a>
+
+
+<a href="/blog">Blog</a>
+
+</nav>
+</header>
+  <main>
+
+<h1>云原生之k8s入门</h1>
+<p>
+  <i>
+    <time datetime='2023-02-22' pubdate>
+      22 Feb, 2023
+    </time>
+  </i>
+</p>
+
+<content>
+  <p>在学习docker的时候我们说到，docker的使用标志着进入容器化时代，但随之也产生了许多问题：</p>
+<ol>
+<li>如何协调和调度这些容器？</li>
+<li>如何保证升级应用时不会中断服务的提供？</li>
+<li>如何监控容器的运行状况？</li>
+<li>如何批量操作容器中的应用？</li>
+<li>&hellip;&hellip;</li>
+</ol>
+<p>解决这些问题所需要的就是<strong>容器编排技术</strong>，k8s是当前流行的大规模容器编排系统。</p>
+<ul>
+<li>服务发现和负载均衡。使用DNS名称或ip地址公开容器，k8s可以负载均衡并分配网络流量。</li>
+<li>存储编排。允许自动挂载所选择的存储系统，如本地存储、公共云提供商等。</li>
+<li>自动部署和回滚。可以自动化k8s创建新容、删除现有容器并将资源用于新容器</li>
+<li>自动装箱计算。k8s可以管理容器所需的cpu和内存(RAM)</li>
+<li>自我修复。</li>
+<li>密钥和配置管理。k8s允许存储和管理敏感信息，可以在不重建容器镜像的情况下部署和更新密钥和应用程序配置，无需在堆栈配置中暴露密钥。
+k8s提供了弹性运行分布式系统框架，满足扩展要求、故障转移、部署模式等。</li>
+</ul>
+<h2 id="架构">架构</h2>
+<blockquote>
+<p><a href="https://kubernetes.io/docs/concepts/overview/components/">https://kubernetes.io/docs/concepts/overview/components/</a>
+<img src="components.svg" alt=""></p>
+</blockquote>
+<h2 id="集群部署">集群部署</h2>
+<p>k8s的集群创建需要最少三台机器，我在阿里云购买了三台centos服务器，对于服务器有以下要求。</p>
+<ul>
+<li>2cpu或更多</li>
+<li>2GB或更多RAM</li>
+<li>机器间可以互相通信、不能有重复的主机名、mac地址</li>
+<li>禁用交换分区</li>
+</ul>
+<p>对于三台服务器，创建了网段为171.31.0.0/16的专用网络，和网段为171.31.0.0/24的交换机，并让三台服务器位于该专用网络和交换机下。</p>
+<blockquote>
+<p>以下命令默认在所有机器中都要执行</p>
+</blockquote>
+<h3 id="1-安装kubeadm">1. 安装kubeadm</h3>
+<ol>
+<li>配置基础环境</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e">#各个机器设置自己的域名</span>
+</span></span><span style="display:flex;"><span>hostnamectl set-hostname xxxx
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 刷新，显示主机名</span>
+</span></span><span style="display:flex;"><span>bash
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 将 SELinux 设置为 permissive 模式（相当于将其禁用）</span>
+</span></span><span style="display:flex;"><span>sudo setenforce <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>sudo sed -i <span style="color:#e6db74">&#39;s/^SELINUX=enforcing$/SELINUX=permissive/&#39;</span> /etc/selinux/config
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#关闭swap</span>
+</span></span><span style="display:flex;"><span>swapoff -a  
+</span></span><span style="display:flex;"><span>sed -ri <span style="color:#e6db74">&#39;s/.*swap.*/#&amp;/&#39;</span> /etc/fstab
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#允许 iptables 检查桥接流量</span>
+</span></span><span style="display:flex;"><span>cat <span style="color:#e6db74">&lt;&lt;EOF | sudo tee /etc/modules-load.d/k8s.conf
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">br_netfilter
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>cat <span style="color:#e6db74">&lt;&lt;EOF | sudo tee /etc/sysctl.d/k8s.conf
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">net.bridge.bridge-nf-call-ip6tables = 1
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">net.bridge.bridge-nf-call-iptables = 1
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span><span style="display:flex;"><span>sudo sysctl --system
+</span></span></code></pre></div><ol start="2">
+<li>安装kubectl、kubelet、kubeadm</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e"># 配置yum源</span>
+</span></span><span style="display:flex;"><span>cat <span style="color:#e6db74">&lt;&lt;EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">[kubernetes]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">name=Kubernetes
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">baseurl=http://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">enabled=1
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">gpgcheck=0
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">repo_gpgcheck=0
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">gpgkey=http://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   http://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">exclude=kubelet kubeadm kubectl
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 下载指定版本</span>
+</span></span><span style="display:flex;"><span>sudo yum install -y kubelet-1.20.9 kubeadm-1.20.9 kubectl-1.20.9 --disableexcludes<span style="color:#f92672">=</span>kubernetes
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sudo systemctl enable --now kubelet
+</span></span></code></pre></div><blockquote>
+<p>kubelet每隔几秒会重启，使用<code>systemctl status kubelet</code>查看时状态可能是inactive也可能是active，因为它陷入了等待kubeadm指令的死循环。</p>
+</blockquote>
+<h3 id="2-使用kubeadm引导集群">2. 使用kubeadm引导集群</h3>
+<ol>
+<li>下载镜像</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>sudo tee ./images.sh <span style="color:#e6db74">&lt;&lt;-&#39;EOF&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">images=(
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">kube-apiserver:v1.20.9
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">kube-proxy:v1.20.9
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">kube-controller-manager:v1.20.9
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">kube-scheduler:v1.20.9
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">coredns:1.7.0
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">etcd:3.4.13-0
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">pause:3.2
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">for imageName in ${images[@]} ; do
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">docker pull registry.cn-hangzhou.aliyuncs.com/lfy_k8s_images/$imageName
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">done
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 执行该命令行需要下载docker环境，可以参考https://zerlina-ysl.github.io/posts/blog/devops_docker/</span>
+</span></span><span style="display:flex;"><span>chmod +x ./images.sh <span style="color:#f92672">&amp;&amp;</span> ./images.sh
+</span></span></code></pre></div><ol start="2">
+<li>初始化master节点</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e"># 所有机器添加master域名映射，需要修改为自己的master节点的私有ip,设置该ip机器为集群入口节点</span>
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;171.31.0.86  cluster-endpoint&#34;</span> &gt;&gt; /etc/hosts
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 执行后各节点执行ping命令，能ping通即配置成功</span>
+</span></span><span style="display:flex;"><span>ping cluster-endpoint<span style="color:#e6db74">```</span>
+</span></span><span style="display:flex;"><span>**以下命令只在主节点中运行**
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">```</span>shell
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 同理，第一个addr是master的私有ip</span>
+</span></span><span style="display:flex;"><span>kubeadm init <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>--apiserver-advertise-address<span style="color:#f92672">=</span>171.31.0.86 <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>--control-plane-endpoint<span style="color:#f92672">=</span>cluster-endpoint <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>--image-repository registry.cn-hangzhou.aliyuncs.com/lfy_k8s_images <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>--kubernetes-version v1.20.9 <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>--service-cidr<span style="color:#f92672">=</span>10.96.0.0/16 <span style="color:#ae81ff">\ </span><span style="color:#75715e"># service的ip范围</span>
+</span></span><span style="display:flex;"><span>--pod-network-cidr<span style="color:#f92672">=</span>192.168.0.0/16 <span style="color:#75715e"># pod的ip范围</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#所有网络范围不重叠</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 主节点初始化成功后会返回以下指令，需要保留</span>
+</span></span><span style="display:flex;"><span>Your Kubernetes control-plane has initialized successfully!
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>To start using your cluster, you need to run the following as a regular user:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  mkdir -p $HOME/.kube
+</span></span><span style="display:flex;"><span>  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+</span></span><span style="display:flex;"><span>  sudo chown <span style="color:#66d9ef">$(</span>id -u<span style="color:#66d9ef">)</span>:<span style="color:#66d9ef">$(</span>id -g<span style="color:#66d9ef">)</span> $HOME/.kube/config
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Alternatively, <span style="color:#66d9ef">if</span> you are the root user, you can run:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  export KUBECONFIG<span style="color:#f92672">=</span>/etc/kubernetes/admin.conf
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>You should now deploy a pod network to the cluster.
+</span></span><span style="display:flex;"><span>Run <span style="color:#e6db74">&#34;kubectl apply -f [podnetwork].yaml&#34;</span> with one of the options listed at:
+</span></span><span style="display:flex;"><span>  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>You can now join any number of control-plane nodes by copying certificate authorities
+</span></span><span style="display:flex;"><span>and service account keys on each node and <span style="color:#66d9ef">then</span> running the following as root:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  kubeadm join cluster-endpoint:6443 --token 7okoz9.ti7losttdfw118hi <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    --discovery-token-ca-cert-hash sha256:92dad63ae98727291c666b048098178e19c9b1584f560283fe2b5d8e9613a941 <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    --control-plane 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Then you can join any number of worker nodes by running the following on each as root:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>kubeadm join cluster-endpoint:6443 --token 7okoz9.ti7losttdfw118hi <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    --discovery-token-ca-cert-hash sha256:92dad63ae98727291c666b048098178e19c9b1584f560283fe2b5d8e9613a941
+</span></span></code></pre></div><p>分析以上返回信息,需要执行以下操作（⚠️，仍是只在主节点运行）：
+2.1 开启容器的运行</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>mkdir -p $HOME/.kube
+</span></span><span style="display:flex;"><span>  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+</span></span><span style="display:flex;"><span>  sudo chown <span style="color:#66d9ef">$(</span>id -u<span style="color:#66d9ef">)</span>:<span style="color:#66d9ef">$(</span>id -g<span style="color:#66d9ef">)</span> $HOME/.kube/config
+</span></span></code></pre></div><p>2.2 部署网络插件</p>
+<p>运行后主节点初始化成功，但是<code>kubectl get nodes</code>后状态仍是not ready，此时还需要安装一个网络插件，根据提示的网址https://kubernetes.io/docs/concepts/cluster-administration/addons/，选择安装calico插件，注意安装的calico的版本</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>curl https://docs.projectcalico.org/v3.20/manifests/calico.yaml -O
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 运行后生成.yaml文件，根据配置文件为集群创建资源</span>
+</span></span><span style="display:flex;"><span>kubectl apply -f calico.yaml
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 查询此时集群中的所有应用(Pod)</span>
+</span></span><span style="display:flex;"><span>kubectl get pod -A
+</span></span></code></pre></div><p>此时重新运行<code>kubectl get nodes</code>,主节点的状态已变为ready。</p>
+<ol start="3">
+<li>集群中加入node节点(⚠️：在除了主节点的其他节点中运行)<br>
+以下命令只在24h内有效，但是过期可以在主节点使用<code>kubeadm token create --print-join-command</code>创建新的令牌，将返回结果重新在从节点运行即可。</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>kubeadm join cluster-endpoint:6443 --token 7okoz9.ti7losttdfw118hi <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    --discovery-token-ca-cert-hash sha256:92dad63ae98727291c666b048098178e19c9b1584f560283fe2b5d8e9613a941
+</span></span></code></pre></div><p>返回&quot;This node has joined the cluster:&quot;,表明节点加入集群成功。<br>
+此时在<strong>主节点</strong>执行<code>kubectl get nodes</code>,可以看到集群中节点情况。此时集群部署成功。
+<img src="getNodes.png" alt=""></p>
+<ol start="4">
+<li>
+<p>验证kubernetes的集群能力
+reboot重启三台机器，查看集群状态，会发现k8s集群状态不受影响，这是因为集群的自我修复能力。</p>
+</li>
+<li>
+<p>安装dashboard可视化界面</p>
+</li>
+</ol>
+<blockquote>
+<p>[https://github.com/kubernetes/dashboard</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e"># 运行远程配置文件，安装可视化工具</span>
+</span></span><span style="display:flex;"><span>kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.3.1/aio/deploy/recommended.yaml
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 设置访问端口，将配置文件中spec.type的value设置为 NodePort</span>
+</span></span><span style="display:flex;"><span>kubectl edit svc kubernetes-dashboard -n kubernetes-dashboard
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 找到端口</span>
+</span></span><span style="display:flex;"><span>kubectl get svc -A |grep kubernetes-dashboard
+</span></span></code></pre></div><p><img src="svc.png" alt="">
+会生成一个超过3万的端口号。对于32427，就是访问可视化界面的端口，需要在安全组放行。之后可以使用集群中任一机器的公网ip地址+32427，就可以访问可视化界面。<br>
+创建dash-usr.yaml,粘贴内容。</p>
+<pre tabindex="0"><code>#创建访问账号，准备一个yaml文件； vi dash-usr.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: admin-user
+  namespace: kubernetes-dashboard
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: admin-user
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: admin-user
+  namespace: kubernetes-dashboard
+</code></pre><p><code>kubectl apply -f dash-usr.yaml</code>,应用配置文件，创建访问账号。</p>
+<pre tabindex="0"><code>#获取访问令牌
+kubectl -n kubernetes-dashboard get secret $(kubectl -n kubernetes-dashboard get sa/admin-user -o jsonpath=&#34;{.secrets[0].name}&#34;) -o go-template=&#34;{{.data.token | base64decode}}&#34;
+# 以下是返回的内容，就是访问可视化dashboard的token
+eyJhbGciOiJSUzI1NiIsImtpZCI6IkstSF9iTUlCaTVNNFVTVW5CZVVJYzh0WjA1QlRuMERELXpRRW5xUFZrNEkifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlcm5ldGVzLWRhc2hib2FyZCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJhZG1pbi11c2VyLXRva2VuLXdjNHZ4Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImFkbWluLXVzZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiJmZGNhZDgzMy01ZmUzLTQzYjAtYjU5NC1lNTlkNGYwZjhhNzAiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZXJuZXRlcy1kYXNoYm9hcmQ6YWRtaW4tdXNlciJ9.dTI-mL9SuaTU-NCSjNsXCJ5BKdaye5NLocY47FMPzEJY6OPuhIdAuk7WXEA5o6AVSncWP55fG2s55WEn1dlU-nj90a2A6RkRHGwubiH761GSkDqg3GV7tKVCyzSA_-UDzu0VbdZVbPITYFNDUSIayKyOjRPUHW0IxvQzY2CRkWF4Dt0OvmmWANe-yqlAecSegEfizx08_KVxkYmtRUpGrD4KFqAzg9RiP6qtymOUEDkoxIP6qaZtD6bJ6No14ZaEM142cGvUSQoZfetMq0OjLqEHXLkVQem8d84cTBYlRu606SIdFowD4NafdNXFdH6N3en0PEK_LofWABxca7ogkA
+</code></pre><h2 id="k8s实战">k8s实战</h2>
+<h4 id="namespace">NameSpace</h4>
+<blockquote>
+<p>In Kubernetes, <em>namespaces</em> provides a mechanism for isolating groups of resources within a single cluster. Names of resources need to be unique within a namespace, but not across namespaces. Namespace-based scoping is applicable only for namespaced objects <em>(e.g. Deployments, Services, etc)</em> and not for cluster-wide objects <em>(e.g. StorageClass, Nodes, PersistentVolumes, etc)</em>.</p>
+</blockquote>
+<p>namespace提供了一种在集群中隔离资源组的机制,每一个资源都有所属的namespace。可以使用<code>kubectl get ns</code>查询namespace的种类。也可以使用&quot;-n&quot;参数查询指定namespace的资源。
+<img src="namespace.png" alt=""><br>
+可以使用<code>kubectl create/delete ns name</code>对namespace进行创建/删除，注意删除时会将namespace中的资源共同删除。<br>
+也可以使用yaml配置文件创建namespace，同理，删除.yaml文件(<code>kubectl delete -f .yaml</code>)就对namespace的删除。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>apiVersion: v1 <span style="color:#75715e"># 版本号</span>
+</span></span><span style="display:flex;"><span>kind: Namespace <span style="color:#75715e"># 资源类型</span>
+</span></span><span style="display:flex;"><span>metadata:
+</span></span><span style="display:flex;"><span>  name: hello <span style="color:#75715e"># namespace的名称</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 使用kubectl apply -f对该配置文件进行应用，就成功创建了名称为hello的namespace</span>
+</span></span></code></pre></div><h4 id="pod">Pod</h4>
+<blockquote>
+<p><em>Pods</em> are the smallest deployable units of computing that you can create and manage in Kubernetes.
+A <em>Pod</em> (as in a pod of whales or pea pod) is a group of one or more <a href="https://kubernetes.io/docs/concepts/containers/">containers</a>, with shared storage and network resources, and a specification for how to run the containers. A Pod&rsquo;s contents are always co-located and co-scheduled, and run in a shared context. A Pod models an application-specific &ldquo;logical host&rdquo;: it contains one or more application containers which are relatively tightly coupled. In non-cloud contexts, applications executed on the same physical or virtual machine are analogous to cloud applications executed on the same logical host.</p>
+</blockquote>
+<p>Pod是运行的一组容器，k8s创建和管理的最小的可部署计算单元。<br>
+可以使用<code>kubectl run mynginx --image=nginx</code>创建pod，此时创建的pod在default的namesapce下。也可以使用.yaml配置文件来创建。注意：因为端口号冲突，一个pod中不能启动两个相同的镜像。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">v1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">kind</span>: <span style="color:#ae81ff">Pod</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">labels</span>:
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">run</span>: <span style="color:#ae81ff">mynginx</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">name</span>: <span style="color:#ae81ff">mynginx</span> <span style="color:#75715e"># pod名称</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">namespace</span>: <span style="color:#ae81ff">default</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">spec</span>:
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">containers</span>: <span style="color:#75715e"># 容器</span>
+</span></span><span style="display:flex;"><span>	- <span style="color:#f92672">image</span>: <span style="color:#ae81ff">nginx</span> <span style="color:#75715e"># 镜像名称 </span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">name</span>: <span style="color:#ae81ff">mynginx		 </span>
+</span></span><span style="display:flex;"><span>	- <span style="color:#f92672">image</span>: <span style="color:#ae81ff">tomcat</span>
+</span></span><span style="display:flex;"><span>	  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">mytomcat</span>
+</span></span></code></pre></div><p><code>kubectl describe pod xx</code> 查看pod的状况。<br>
+<code>kubectl delete pod -n namespace xx</code> 删除pod。<br>
+<code>kubectl logs xx</code> 查看pod日志，加入<code>-f</code>可以追踪pod运行日志。<br>
+<code>kubectl get pod -owide</code> 查看pod详细信息。k8s会为每一个pod分配ip，使用pod ip+容器port就可以访问对应的应用。集群中任一机器及任意应用都可以访问该应用，但是不能在集群外部访问。同理，-w可以追踪pod日志。<br>
+<code>kubectl exec -it mynginx -- /bin/bash</code> 进入k8s中pod节点的某个容器的控制台。</p>
+<h4 id="deployment">Deployment</h4>
+<blockquote>
+<p>A <em>Deployment</em> provides declarative updates for <a href="https://kubernetes.io/docs/concepts/workloads/pods/">Pods</a> and <a href="https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/">ReplicaSets</a>.
+You describe a <em>desired state</em> in a Deployment, and the Deployment <a href="https://kubernetes.io/docs/concepts/architecture/controller/">Controller</a> changes the actual state to the desired state at a controlled rate. You can define Deployments to create new ReplicaSets, or to remove existing Deployments and adopt all their resources with new Deployments.</p>
+</blockquote>
+<p>Deployment用来控制Pod，使Pod拥有多副本、自愈、扩缩容等能力。<br>
+<code>kubectl create deployment [deploymentName] nginx --image=nginx --replicas=3</code> 创建由deployment控制的、名称为mytomcat的Pod。也可以使用.yaml配置文件创建。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">apps/v1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">kind</span>: <span style="color:#ae81ff">Deployment</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">labesl</span>: 
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">app</span>: <span style="color:#ae81ff">my-dep</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">name</span>: <span style="color:#ae81ff">my-dep</span> <span style="color:#75715e"># deployment名称</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">spec</span>:
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">replicas</span>: <span style="color:#ae81ff">3</span> <span style="color:#75715e"># 副本数量</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">selector</span>:
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">matchLabels</span>: 
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">app</span>: <span style="color:#ae81ff">my-dep </span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">template</span>:
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">labels</span>:
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">app</span>: <span style="color:#ae81ff">my-dep </span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">spec</span>:
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">containers</span>:
+</span></span><span style="display:flex;"><span>				- <span style="color:#f92672">image</span>: <span style="color:#ae81ff">nginx</span> <span style="color:#75715e"># 镜像</span>
+</span></span><span style="display:flex;"><span>				  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">nginx</span> <span style="color:#75715e"># 镜像名称</span>
+</span></span></code></pre></div><p>即使该Pod宕机被删除，deployment会在其他机器重新下载该Pod。只有<code>kubectl delete deplyment</code> ,才会真正删除该deployment控制的pod。<br>
+<code>kubectl get deploy</code> 查看所有的deployment状态。</p>
+<ol>
+<li><strong>扩缩容</strong>。deployment会根据当前网络和流量情况对pod进行动态扩缩容，也可以命令进行扩缩容。<code>kubectl scale deploy/my-dep --replicas=5</code> 。也可以通过<code>kubectl edit deploy/my-dep</code>修改.yaml配置文件的方式进行扩缩容。</li>
+<li><strong>自愈和故障转移</strong>。当pod出现问题，status不再是running时,deployment会对故障pod进行重启操作。当pod所处机器宕机，deployment在一个时间阈值内感知不到该节点，就会在其他机器上对该节点的pod进行创建。</li>
+<li><strong>滚动更新</strong>，即不停机更新。<code>kubectl set image deploy/my-dep nginx=nginx:1.16.1 --record</code> 此时会新启动一个pod，当状态为running时，会将旧镜像的pod状态设置为Terminating。</li>
+<li><strong>版本回退</strong>。<code>kubectl rollout history deploy/my-dep</code>可以查询my-dep下所有pod的版本回退记录。<code>kubectl rollout undo deploy/my-dep --to-revision=1</code>可以将my-dep下的pod回退到第一次的历史版本。如果不携带&ndash;to-revison参数，默认回退到上一个版本。</li>
+</ol>
+<h5 id="其他工作负载">其他工作负载</h5>
+<ul>
+<li>deployment：应用是无状态的，适合微服务等。</li>
+<li>StatefulSet：需要数据的保留，如使用redis，此时提供稳定的存储和数据。</li>
+<li>DaemonSet：守护型部署应用，如每个pod都需要日志等应用组件。</li>
+<li>Job/Cronjob：定时任务部署，如垃圾清理组件。</li>
+</ul>
+<h4 id="service">Service</h4>
+<blockquote>
+<p>An abstract way to expose an application running on a set of <a href="https://kubernetes.io/docs/concepts/workloads/pods/">Pods</a> as a network service. A key aim of Services in Kubernetes is that you don&rsquo;t need to modify your existing application to use an unfamiliar service discovery mechanism. You can run code in Pods, whether this is a code designed for a cloud-native world, or an older app you&rsquo;ve containerized. You use a Service to make that set of Pods available on the network so that clients can interact with it.
+If you use a <a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/">Deployment</a> to run your app, that Deployment can create and destroy Pods dynamically. From one moment to the next, you don&rsquo;t know how many of those Pods are working and healthy; you might not even know what those healthy Pods are named. Kubernetes <a href="https://kubernetes.io/docs/concepts/workloads/pods/">Pods</a> are created and destroyed to match the desired state of your cluster. Pods are emphemeral resources (you should not expect that an individual Pod is reliable and durable).
+Each Pod gets its own IP address (Kubernetes expects network plugins to ensure this). For a given Deployment in your cluster, the set of Pods running in one moment in time could be different from the set of Pods running that application a moment later.
+This leads to a problem: if some set of Pods (call them &ldquo;backends&rdquo;) provides functionality to other Pods (call them &ldquo;frontends&rdquo;) inside your cluster, how do the frontends find out and keep track of which IP address to connect to, so that the frontend can use the backend part of the workload?</p>
+</blockquote>
+<p>Service其实就是将运行在一套pod上的应用公开作为网络服务。对于Deployment部署的应用无法保障节点的状态，即节点是不可靠和不耐用的。此时如果后端服务提供函数，前端如何追踪到该接口并连接到对应的ip？这就是service的作用&mdash;服务发现。<br>
+<code>kubectl expose deploy my-dep --port=8000 --target-port=80 --type=ClusterIP</code>,&ndash;port参数是service对外的目标端口，&ndash;target-port是要访问的集群内的容器端口。此时使用<code>kubectl get service</code>，就能获取到名为my-dep的service以及对应的ip，加上设置的对外port就可以集群内负载均衡访问对应的容器。也可以使用.yaml配置文件实现。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">v1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">kind</span>: <span style="color:#ae81ff">Service</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">labels</span>:
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">app</span>: <span style="color:#ae81ff">my-dep</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">name</span>: <span style="color:#ae81ff">my-dep</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">spec</span>:
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">selector</span>:
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">app</span>: <span style="color:#ae81ff">my-dep</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">ports</span>:
+</span></span><span style="display:flex;"><span>	- <span style="color:#f92672">port</span>: <span style="color:#ae81ff">8000</span>
+</span></span><span style="display:flex;"><span>	  <span style="color:#f92672">protocal</span>: <span style="color:#ae81ff">TCP</span>
+</span></span><span style="display:flex;"><span>	  <span style="color:#f92672">targetPort</span>: <span style="color:#ae81ff">80</span>
+</span></span></code></pre></div><p>也可以直接通过访问服务名在集群内直接访问容器：<code>curl my-dep.default.svc:8000</code>。<br>
+service可以感知到pod的状态变化，当pod下线，就无法访问该pod对应的服务，而pod重新上线，又会加入到pod的服务中。<br>
+以上演示的暴露只能在集群内暴露，如果想对外暴露，在公网中访问，需要采用NodePort模式<code>kubectl expose deploy my-dep --port=8000 --target-port=80 --type=NodePort</code>。此时运行<code>kubectl get svc</code>,拥有ClusterIP信息，和type=ClusterIP相比，还多了Port数据，此时访问集群内任一机器ip+该port都可以访问服务，实现服务对外暴露。</p>
+<h4 id="ingress">Ingress</h4>
+<blockquote>
+<p>An API object that manages external access to the services in a cluster, typically HTTP.
+Ingress may provide load balancing, SSL termination and name-based virtual hosting.</p>
+</blockquote>
+<p>Ingress是Service的统一网关入口，对于Service是访问Pod的入口。即流量-&gt;Ingress-&gt;Service-&gt;Pod。</p>
+<blockquote>
+<p><a href="https://kubernetes.github.io/ingress-nginx/">https://kubernetes.github.io/ingress-nginx/</a>
+底层还是nginx</p>
+</blockquote>
+<h5 id="安装">安装</h5>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>wget https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.47.0/deploy/static/provider/baremetal/deploy.yaml
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#修改镜像</span>
+</span></span><span style="display:flex;"><span>vi deploy.yaml
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#将image的值改为如下值：</span>
+</span></span><span style="display:flex;"><span>registry.cn-hangzhou.aliyuncs.com/lfy_k8s_images/ingress-nginx-controller:v0.46.0
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 检查安装的结果</span>
+</span></span><span style="display:flex;"><span>kubectl get pod,svc -n ingress-nginx
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 此时会因NodePort模式暴露访问端口，需要在安全组把svc暴露的端口放行</span>
+</span></span></code></pre></div><h5 id="环境测试">环境测试</h5>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">apps/v1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">kind</span>: <span style="color:#ae81ff">Deployment</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">hello-server</span> <span style="color:#75715e"># deployment的名称</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">spec</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">replicas</span>: <span style="color:#ae81ff">2</span> <span style="color:#75715e"># 副本</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">selector</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">matchLabels</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">app</span>: <span style="color:#ae81ff">hello-server</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">template</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">labels</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">app</span>: <span style="color:#ae81ff">hello-server</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">spec</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">containers</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">hello-server</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">image</span>: <span style="color:#ae81ff">registry.cn-hangzhou.aliyuncs.com/lfy_k8s_images/hello-server</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">ports</span>:
+</span></span><span style="display:flex;"><span>        - <span style="color:#f92672">containerPort</span>: <span style="color:#ae81ff">9000</span> <span style="color:#75715e"># 容器的工作端口</span>
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">apps/v1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">kind</span>: <span style="color:#ae81ff">Deployment</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">labels</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">app</span>: <span style="color:#ae81ff">nginx-demo</span> <span style="color:#75715e"># deployment的名称</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">nginx-demo</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">spec</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">replicas</span>: <span style="color:#ae81ff">2</span> <span style="color:#75715e"># 副本</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">selector</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">matchLabels</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">app</span>: <span style="color:#ae81ff">nginx-demo</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">template</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">labels</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">app</span>: <span style="color:#ae81ff">nginx-demo</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">spec</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">containers</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">image</span>: <span style="color:#ae81ff">nginx</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">name</span>: <span style="color:#ae81ff">nginx</span>
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">v1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">kind</span>: <span style="color:#ae81ff">Service </span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">labels</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">app</span>: <span style="color:#ae81ff">nginx-demo</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">nginx-demo</span> <span style="color:#75715e"># Service的名称</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">spec</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">selector</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">app</span>: <span style="color:#ae81ff">nginx-demo</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">ports</span>:
+</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">port</span>: <span style="color:#ae81ff">8000</span> <span style="color:#75715e"># 访问端口</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">protocol</span>: <span style="color:#ae81ff">TCP</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">targetPort</span>: <span style="color:#ae81ff">80</span>
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">v1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">kind</span>: <span style="color:#ae81ff">Service</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">labels</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">app</span>: <span style="color:#ae81ff">hello-server</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">hello-server</span> <span style="color:#75715e"># Service的名称</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">spec</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">selector</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">app</span>: <span style="color:#ae81ff">hello-server</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">ports</span>:
+</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">port</span>: <span style="color:#ae81ff">8000</span> <span style="color:#75715e"># 访问端口</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">protocol</span>: <span style="color:#ae81ff">TCP</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">targetPort</span>: <span style="color:#ae81ff">9000</span>
+</span></span></code></pre></div><p>应用上述配置文件。配置文件中部署了两个Service，第一个Service是hello-server,负责两个有hello-server镜像的pod；第二个Service是nginx-demo,控制两个有nginx镜像的pod。</p>
+<h5 id="域名访问">域名访问</h5>
+<p>目前想实现如下功能：访问hello.atguigui.com:31405可以将请求转给hello-server处理，访问demo.atguigu.com:31405将请求转给nginx-demo处理。</p>
+<ol>
+<li>配置域名和service映射访问规则。</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">networking.k8s.io/v1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">kind</span>: <span style="color:#ae81ff">Ingress  </span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">ingress-host-bar</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">spec</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">ingressClassName</span>: <span style="color:#ae81ff">nginx</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">rules</span>:
+</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">host</span>: <span style="color:#e6db74">&#34;hello.atguigu.com&#34;</span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">http</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">paths</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">pathType</span>: <span style="color:#ae81ff">Prefix</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">path</span>: <span style="color:#e6db74">&#34;/&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">backend</span>:
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">service</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">name</span>: <span style="color:#ae81ff">hello-server</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">port</span>:
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">number</span>: <span style="color:#ae81ff">8000</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">host</span>: <span style="color:#e6db74">&#34;demo.atguigu.com&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">http</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">paths</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">pathType</span>: <span style="color:#ae81ff">Prefix</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">path</span>: <span style="color:#e6db74">&#34;/nginx&#34;</span>  <span style="color:#75715e"># 把请求会转给下面的服务，下面的服务一定要能处理这个路径，不能处理就是404</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">backend</span>:
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">service</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">name</span>: <span style="color:#ae81ff">nginx-demo </span> <span style="color:#75715e">## java，比如使用路径重写，去掉前缀nginx</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">port</span>:
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">number</span>: <span style="color:#ae81ff">8000</span>
+</span></span></code></pre></div><ol start="2">
+<li>配置域名和节点ip的映射。（/etc/hosts)。此时就实现了域名访问的功能。</li>
+</ol>
+<h5 id="路径重写">路径重写</h5>
+<p>以下配置是使用正则表达式实现路径截串。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">networking.k8s.io/v1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">kind</span>: <span style="color:#ae81ff">Ingress  </span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">annotations</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">nginx.ingress.kubernetes.io/rewrite-target</span>: <span style="color:#ae81ff">/$2</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">ingress-host-bar</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">spec</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">ingressClassName</span>: <span style="color:#ae81ff">nginx</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">rules</span>:
+</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">host</span>: <span style="color:#e6db74">&#34;hello.atguigu.com&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">http</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">paths</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">pathType</span>: <span style="color:#ae81ff">Prefix</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">path</span>: <span style="color:#e6db74">&#34;/&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">backend</span>:
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">service</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">name</span>: <span style="color:#ae81ff">hello-server</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">port</span>:
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">number</span>: <span style="color:#ae81ff">8000</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">host</span>: <span style="color:#e6db74">&#34;demo.atguigu.com&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">http</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">paths</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">pathType</span>: <span style="color:#ae81ff">Prefix</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">path</span>: <span style="color:#e6db74">&#34;/nginx(/|$)(.*)&#34;</span>  <span style="color:#75715e"># 把请求会转给下面的服务,如/nginx解析为/，/nginx/router解析为/router</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">backend</span>:
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">service</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">name</span>: <span style="color:#ae81ff">nginx-demo </span> <span style="color:#75715e">## java，比如使用路径重写，去掉前缀nginx</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">port</span>:
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">number</span>: <span style="color:#ae81ff">8000</span>
+</span></span></code></pre></div><h5 id="流量限制">流量限制</h5>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">networking.k8s.io/v1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">kind</span>: <span style="color:#ae81ff">Ingress</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">ingress-limit-rate</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">annotations</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">nginx.ingress.kubernetes.io/limit-rps</span>: <span style="color:#e6db74">&#34;1&#34;</span> <span style="color:#75715e"># 每s限流1个</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">spec</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">ingressClassName</span>: <span style="color:#ae81ff">nginx</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">rules</span>:
+</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">host</span>: <span style="color:#e6db74">&#34;haha.atguigu.com&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">http</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">paths</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">pathType</span>: <span style="color:#ae81ff">Exact</span> <span style="color:#75715e"># 精确匹配</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">path</span>: <span style="color:#e6db74">&#34;/&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">backend</span>:
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">service</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">name</span>: <span style="color:#ae81ff">nginx-demo</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">port</span>:
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">number</span>: <span style="color:#ae81ff">8000</span>
+</span></span></code></pre></div><p>如果超过流量限制，会返回503(service temporarily unavailable)。而这些状态码也可以在配置文件自定义配置。</p>
+<p>当请求流量来时，先通过LB负载均衡，根据负载均衡策略将流量打到任一机器的Ingress上，根据配置的域名或路由规则达到对应的Service。</p>
+<h4 id="存储抽象">存储抽象</h4>
+<p>在使用docker的时候，会将容器中镜像的某些文件挂载到容器上，方便对文件内容进行修改。k8S中也有类似操作，可以将Pod中的文件挂载到外部的文件。但是当节点宕机时，虽然deployment会自动在其他节点重起一个pod，但对应挂载的文件不会转移，pod中的数据在故障后无法被保存。为解决这个问题，k8s有一个单独的<strong>存储层</strong>，处理各节点文件的挂载。也有一些专业的存储层框架可以使用，如Glusterfs、NFS、CephFS。<br>
+当使用NFS存储系统时，一个Pod的文件会多节点备份，并进行同步，即使出现故障转移，也不会影响数据。<br>
+在搭建NFS存储系统时，采用主从架构，主节点将数据同步到从节点。</p>
+<ol>
+<li>安装NFS系统，集群中所有机器都要安装。<code>yum install -y nfs-utils</code></li>
+<li>配置主从节点。</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e"># 主节点配置</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#nfs主节点 向其他节点以非安全、读写、同步的方式暴露/nfs/data/目录</span>
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;/nfs/data/ *(insecure,rw,sync,no_root_squash)&#34;</span> &gt; /etc/exports
+</span></span><span style="display:flex;"><span>mkdir -p /nfs/data 
+</span></span><span style="display:flex;"><span>systemctl enable rpcbind --now <span style="color:#75715e"># 启动rpc远程绑定</span>
+</span></span><span style="display:flex;"><span>systemctl enable nfs-server --now 
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 检查配置是否生效</span>
+</span></span><span style="display:flex;"><span>exportfs -r
+</span></span><span style="display:flex;"><span>exportfs <span style="color:#75715e"># 输出共享目录</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 从节点配置 </span>
+</span></span><span style="display:flex;"><span>showmount -e 172.31.0.4 <span style="color:#75715e"># 注意：这里需要主节点机器的私有ip地址</span>
+</span></span><span style="display:flex;"><span> <span style="color:#75715e">#执行以下命令挂载 nfs 服务器上的共享目录到本机路径 /nfs/data</span>
+</span></span><span style="display:flex;"><span> mkdir -p /nfs/data
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 挂载命令 远程服务器的ip地址 远程服务器的文件夹 本地文件夹</span>
+</span></span><span style="display:flex;"><span>mount -t nfs 172.31.0.4:/nfs/data /nfs/data
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 测试 nfs系统部署成功后，主节点进行如下操作 从节点也会同步该数据</span>
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;hello nfs server&#34;</span> &gt; /nfs/data/test.txt
+</span></span></code></pre></div><ol start="3">
+<li>原生方式数据挂载，使用配置文件的方式应用。</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">apps/v1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">kind</span>: <span style="color:#ae81ff">Deployment</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">labels</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">app</span>: <span style="color:#ae81ff">nginx-pv-demo</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">nginx-pv-demo</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">spec</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">replicas</span>: <span style="color:#ae81ff">2</span> <span style="color:#75715e"># 部署两个pod，两个 pod中文件的修改都会影响到外层文件的内容</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">selector</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">matchLabels</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">app</span>: <span style="color:#ae81ff">nginx-pv-demo</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">template</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">labels</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">app</span>: <span style="color:#ae81ff">nginx-pv-demo</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">spec</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">containers</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">image</span>: <span style="color:#ae81ff">nginx</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">name</span>: <span style="color:#ae81ff">nginx</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">volumeMounts</span>: <span style="color:#75715e"># 卷挂载</span>
+</span></span><span style="display:flex;"><span>        - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">html</span> <span style="color:#75715e"># 配置命名</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">mountPath</span>: <span style="color:#ae81ff">/usr/share/nginx/html</span> <span style="color:#75715e"># 将nginx内部的该路径文件挂载到外部</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">volumes</span>:
+</span></span><span style="display:flex;"><span>        - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">html </span> <span style="color:#75715e"># 配置命名</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">nfs</span>: <span style="color:#75715e"># 挂载方式，使用nfs网络文件系统</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">server</span>: <span style="color:#ae81ff">172.31.0.4</span> <span style="color:#75715e"># nfs服务器主节点ip</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">path</span>: <span style="color:#ae81ff">/nfs/data/nginx-pv</span> <span style="color:#75715e"># 即nginx镜像到mountPath路径挂在到容器的path路径 挂在前外部目录需要先创建</span>
+</span></span></code></pre></div><p>使用原生挂载的方式，如果将pod节点全部删除，仍会保留挂载的文件，在pod节点过多的情况下，容易造成数据冗余。并且在挂载时，对于pod中原文件的大小没有限制，因此我们可以使用PV&amp;PVC来解决以上问题。</p>
+<h5 id="pvpvc">PV&amp;PVC</h5>
+<p>PV：持久卷，persistent volumn,将应用需要持久化的数据保存在指定位置。如上述的/nfs/data/nginx-pv就是持久卷。<br>
+PVC：持久卷声明，persistent volumn claim ,申明需要使用的持久卷规格。<br>
+PV池：将固定大小的PV提前创建好，静态供应。<br>
+PV和PVC主要用来高效挂载镜像文件。当pod需要挂载某个目录时，需要先进行PVC，声明需要挂载的持久卷以及对应的大小，PV池会根据声明从PV池中分配对应的PV。此时，原始目录和pvc和pv进行了绑定。即使pod宕机，重起pod也会根据pvc找到对应挂载的数据，而pod如果被删除，对应的pv也会被回收。</p>
+<ol>
+<li>创建PV。PV1名称是pv01-10m,可读可写多节点，容量为10M，路径为/nfs/data/01,PV2名称是pv02-1gi,容量为1Gi，路径为/nfs/data/02,PV3名称是pv03-3gi,容量是3Gi，路径为/nfs/data/03，配置文件应用后PV池就创建成功，可以使用<code>kubectl get persistentvolumn/pv</code>获取PV资源。</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">v1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">kind</span>: <span style="color:#ae81ff">PersistentVolume</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">pv01-10m</span> <span style="color:#75715e"># 名称需要全小写，命名规则和域名规则类似</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">spec</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">capacity</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">storage</span>: <span style="color:#ae81ff">10M</span> <span style="color:#75715e"># 限制PV容量</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">accessModes</span>:
+</span></span><span style="display:flex;"><span>    - <span style="color:#ae81ff">ReadWriteMany</span> <span style="color:#75715e"># 可读可写多节点</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">storageClassName</span>: <span style="color:#ae81ff">nfs</span> <span style="color:#75715e"># 需要和PVC的name对应</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">nfs</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">path</span>: <span style="color:#ae81ff">/nfs/data/01</span> <span style="color:#75715e"># 需要提前创建该文件</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">server</span>: <span style="color:#ae81ff">172.31.0.4</span> <span style="color:#75715e"># nfs服务器主节点的私有ip地址</span>
+</span></span><span style="display:flex;"><span>--- <span style="color:#75715e"># 文档分割，表示该yaml文件由三个独立的文档组成</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">v1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">kind</span>: <span style="color:#ae81ff">PersistentVolume</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">pv02-1gi</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">spec</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">capacity</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">storage</span>: <span style="color:#ae81ff">1Gi</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">accessModes</span>:
+</span></span><span style="display:flex;"><span>    - <span style="color:#ae81ff">ReadWriteMany</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">storageClassName</span>: <span style="color:#ae81ff">nfs </span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">nfs</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">path</span>: <span style="color:#ae81ff">/nfs/data/02</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">server</span>: <span style="color:#ae81ff">172.31.0.4</span>
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">v1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">kind</span>: <span style="color:#ae81ff">PersistentVolume</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">pv03-3gi</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">spec</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">capacity</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">storage</span>: <span style="color:#ae81ff">3Gi</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">accessModes</span>:
+</span></span><span style="display:flex;"><span>    - <span style="color:#ae81ff">ReadWriteMany</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">storageClassName</span>: <span style="color:#ae81ff">nfs</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">nfs</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">path</span>: <span style="color:#ae81ff">/nfs/data/03</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">server</span>: <span style="color:#ae81ff">172.31.0.4</span>
+</span></span></code></pre></div><ol start="2">
+<li>PVC和PV的绑定和创建。配置文件应用后，PV池根据storage分配对应的PV，被分配的PV状态由available变为bound，claim属性会显示被绑定的PVC(default/nginx-pvc)。如果删除该文件，被绑定的PV状态会变为Released。</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">kind</span>: <span style="color:#ae81ff">PersistentVolumeClaim</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">v1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">nginx-pvc</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">spec</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">accessModes</span>:
+</span></span><span style="display:flex;"><span>    - <span style="color:#ae81ff">ReadWriteMany</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">resources</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">requests</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">storage</span>: <span style="color:#ae81ff">200Mi</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">storageClassName</span>: <span style="color:#ae81ff">nfs</span> <span style="color:#75715e"># 和PV的spec.storageClassName对应</span>
+</span></span></code></pre></div><ol start="3">
+<li>创建Pod和PVC绑定。</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">apps/v1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">kind</span>: <span style="color:#ae81ff">Deployment</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">labels</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">app</span>: <span style="color:#ae81ff">nginx-deploy-pvc</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">nginx-deploy-pvc</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">spec</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">replicas</span>: <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">selector</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">matchLabels</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">app</span>: <span style="color:#ae81ff">nginx-deploy-pvc</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">template</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">labels</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">app</span>: <span style="color:#ae81ff">nginx-deploy-pvc</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">spec</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">containers</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">image</span>: <span style="color:#ae81ff">nginx</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">name</span>: <span style="color:#ae81ff">nginx</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">volumeMounts</span>:
+</span></span><span style="display:flex;"><span>        - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">html</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">mountPath</span>: <span style="color:#ae81ff">/usr/share/nginx/html</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">volumes</span>:
+</span></span><span style="display:flex;"><span>        - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">html</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#	  nfs:  没有PV和PVC之前的配置</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#        server: 172.31.0.4</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#        path: /nfs/data/nginx-pv </span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">persistentVolumeClaim</span>: <span style="color:#75715e"># 从PV池申请PV</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">claimName</span>: <span style="color:#ae81ff">nginx-pvc</span>
+</span></span></code></pre></div><p>以上使用的是静态供应的PV池，同时也有动态供应的PV池，会根据PVC声明所需要的大小在池中动态创建PV并分配绑定，无需人工手动首先创建。</p>
+<h5 id="configmap">ConfigMap</h5>
+<p>目录可以使用PV和PVC来实现挂载，而对于配置文件的挂载和同步更新，可以使用ConfigMap。以下的演示以redis为例。</p>
+<ol>
+<li>把配置文件做成配置集，之后可以把原始配置文件删除。</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e"># 创建配置，redis保存到k8s的etcd；</span>
+</span></span><span style="display:flex;"><span>kubectl create cm redis-conf --from-file<span style="color:#f92672">=</span>redis.conf
+</span></span></code></pre></div><p>此时使用<code>kubectl get cm -oyaml</code>可以得到ConfigMap的yaml格式。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">v1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">data</span>:    <span style="color:#75715e">#data是所有真正的数据 </span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">redis.conf</span>: <span style="color:#ae81ff">|</span> <span style="color:#75715e"># key：默认是文件名  </span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">appendonly yes</span> <span style="color:#75715e"># value：配置文件的内容</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">kind</span>: <span style="color:#ae81ff">ConfigMap</span> <span style="color:#75715e"># 创建ConfigMap</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">redis-conf</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">namespace</span>: <span style="color:#ae81ff">default</span>
+</span></span></code></pre></div><ol start="2">
+<li>创建Pod</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">v1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">kind</span>: <span style="color:#ae81ff">Pod</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">redis</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">spec</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">containers</span>:
+</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">redis</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">redis</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">command</span>: <span style="color:#75715e"># 启动镜像</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">redis-server</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;/redis-master/redis.conf&#34;</span>  <span style="color:#75715e"># redis容器内部的位置</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">ports</span>:
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">containerPort</span>: <span style="color:#ae81ff">6379</span> 
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">volumeMounts</span>: <span style="color:#75715e"># 卷挂载</span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">mountPath</span>: <span style="color:#ae81ff">/data</span> <span style="color:#75715e"># redis中的/data目录</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">name</span>: <span style="color:#ae81ff">data</span> <span style="color:#75715e"># 挂载名称为name</span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">mountPath</span>: <span style="color:#ae81ff">/redis-master</span> <span style="color:#75715e"># redis中的/redis-master文件，redis.conf在该文件下</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">name</span>: <span style="color:#ae81ff">config</span> <span style="color:#75715e"># 挂载名称为config</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">volumes</span>:
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">data</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">emptyDir</span>: {}
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">config</span> <span style="color:#75715e"># name=config的挂载</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">configMap</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">name</span>: <span style="color:#ae81ff">redis-conf</span> <span style="color:#75715e"># name=redis-conf的配置集，即第一步创建的</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">items</span>:
+</span></span><span style="display:flex;"><span>        - <span style="color:#f92672">key</span>: <span style="color:#ae81ff">redis.conf</span> <span style="color:#75715e"># 引入ConfigMap中key=redis.conf的配置</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">path</span>: <span style="color:#ae81ff">redis.conf</span> <span style="color:#75715e"># 指redis镜像中的redis.conf，/redis-master/redis.conf</span>
+</span></span></code></pre></div><ol start="3">
+<li>检查默认配置。<code>kubectl exec -it redis -- redis-cli</code>。此时修改配置集中的value会对应修改redis中的配置文件，可以在redis中使用<code>CONFIG GET xx</code>获取配置项的值，但是修改的同步有一定延迟。注意：Pod部署的中间件无法热更新，虽然配置文件中进行修改，但是需要重新启动Pod才能应用修改后的配置。</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">v1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">kind</span>: <span style="color:#ae81ff">ConfigMap</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">example-redis-config</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">data</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">redis-config</span>: <span style="color:#ae81ff">|</span> <span style="color:#75715e"># 修改配置集中redis的配置</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">maxmemory 2mb</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">maxmemory-policy allkeys-lru </span>
+</span></span></code></pre></div><h5 id="secret">Secret</h5>
+<p>Secret对象类型专门保存密码、令牌、密钥等敏感信息，与ConfigMap原理类似。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e"># 创建Secret</span>
+</span></span><span style="display:flex;"><span>kubectl create secret docker-registry <span style="color:#f92672">[</span>secret-name<span style="color:#f92672">]</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --docker-server<span style="color:#f92672">=</span>&lt;你的镜像仓库服务器&gt; <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --docker-username<span style="color:#f92672">=</span>&lt;你的用户名&gt; <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --docker-password<span style="color:#f92672">=</span>&lt;你的密码&gt; <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --docker-email<span style="color:#f92672">=</span>&lt;你的邮箱地址&gt;
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 以yaml格式查看创建的Secret</span>
+</span></span><span style="display:flex;"><span>kubectl get secret secret-name -oyaml
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 此时再创建镜像，就避免账号密码的泄漏</span>
+</span></span><span style="display:flex;"><span>apiVersion: v1
+</span></span><span style="display:flex;"><span>kind: Pod
+</span></span><span style="display:flex;"><span>metadata:
+</span></span><span style="display:flex;"><span>  name: private-nginx
+</span></span><span style="display:flex;"><span>spec:
+</span></span><span style="display:flex;"><span>  containers:
+</span></span><span style="display:flex;"><span>  - name: private-nginx
+</span></span><span style="display:flex;"><span>    image: leifengyang/guignginx:v1.0 <span style="color:#75715e"># 拉取私有镜像时，避免账号密码的暴露</span>
+</span></span><span style="display:flex;"><span>  imagePullSecrets:
+</span></span><span style="display:flex;"><span>  - name: secret-name <span style="color:#75715e"># secret名称</span>
+</span></span></code></pre></div><h4 id="实战小结">实战小结</h4>
+<ul>
+<li>Deployment部署应用，可以实现故障转移，底层运行的是Pod，Pod中运行的才是真正的容器。每一个Pod有分配的ip，可以互相访问，一般使用Service在上层对Pod统一访问，将一组Pod暴露出一个公共的ip地址。Service上层使用Ingress进行访问控制，Ingress可以进行流量控制、服务映射，相当于统一网关。</li>
+<li>Pod可以使用PV和PVC进行数据挂载，对挂载的文件大小进行申请。使用ConfigMap对配置文件进行挂载。一些密钥等私密信息可以存储到Secret，避免私密数据的泄漏。但Secret的内容其实只是base64编码，如果对应base64解码，其实还是有泄漏私密的问题存在。</li>
+<li>下一步会对KubeSphere进行学习，可以理解为一站式自动化云部署平台，集合了一些日志、动态扩缩容等高级特性。</li>
+</ul>
+
+</content>
+<p>
+  
+  <a href="https://zerlina-ysl.github.io/tags/kubernetes/">#kubernetes</a>
+  
+</p>
+
+  </main>
+  <footer>Made with <a href="https://github.com/janraasch/hugo-bearblog/">Hugo ʕ•ᴥ•ʔ Bear</a>
+</footer>
+
+    
+</body>
+
+</html>

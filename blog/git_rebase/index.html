@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>使用git rebase合并冲突 | ᕕ( ᐛ )ᕗ xiaoli&#39;s blog</title>
+<meta name="title" content="使用git rebase合并冲突" />
+<meta name="description" content="git解决冲突那些事" />
+<meta name="keywords" content="git," />
+
+
+<meta property="og:title" content="使用git rebase合并冲突" />
+<meta property="og:description" content="git解决冲突那些事" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://zerlina-ysl.github.io/blog/git_rebase/" /><meta property="article:section" content="blog" />
+<meta property="article:published_time" content="2022-11-15T00:18:23+08:00" />
+<meta property="article:modified_time" content="2022-11-15T00:18:23+08:00" />
+
+
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="使用git rebase合并冲突"/>
+<meta name="twitter:description" content="git解决冲突那些事"/>
+
+
+
+<meta itemprop="name" content="使用git rebase合并冲突">
+<meta itemprop="description" content="git解决冲突那些事"><meta itemprop="datePublished" content="2022-11-15T00:18:23+08:00" />
+<meta itemprop="dateModified" content="2022-11-15T00:18:23+08:00" />
+<meta itemprop="wordCount" content="131">
+<meta itemprop="keywords" content="git," />
+<meta name="referrer" content="no-referrer-when-downgrade" />
+
+  <style>
+  body {
+    font-family: Verdana, sans-serif;
+    margin: auto;
+    padding: 20px;
+    max-width: 720px;
+    text-align: left;
+    background-color: #fff;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.5;
+    color: #444;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  strong,
+  b {
+    color: #222;
+  }
+
+  a {
+    color: #3273dc;
+     
+  }
+
+  .title {
+    text-decoration: none;
+    border: 0;
+  }
+
+  .title span {
+    font-weight: 400;
+  }
+
+  nav a {
+    margin-right: 10px;
+  }
+
+  textarea {
+    width: 100%;
+    font-size: 16px;
+  }
+
+  input {
+    font-size: 16px;
+  }
+
+  content {
+    line-height: 1.6;
+  }
+
+  table {
+    width: 100%;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  code {
+    padding: 2px 5px;
+    background-color: #f2f2f2;
+  }
+
+  pre code {
+    color: #222;
+    display: block;
+    padding: 20px;
+    white-space: pre-wrap;
+    font-size: 14px;
+    overflow-x: auto;
+  }
+
+  div.highlight pre {
+    background-color: initial;
+    color: initial;
+  }
+
+  div.highlight code {
+    background-color: unset;
+    color: unset;
+  }
+
+  blockquote {
+    border-left: 1px solid #999;
+    color: #222;
+    padding-left: 20px;
+    font-style: italic;
+  }
+
+  footer {
+    padding: 25px;
+    text-align: center;
+  }
+
+  .helptext {
+    color: #777;
+    font-size: small;
+  }
+
+  .errorlist {
+    color: #eba613;
+    font-size: small;
+  }
+
+   
+  ul.blog-posts {
+    list-style-type: none;
+    padding: unset;
+  }
+
+  ul.blog-posts li {
+    display: flex;
+  }
+
+  ul.blog-posts li span {
+    flex: 0 0 130px;
+  }
+
+  ul.blog-posts li a:visited {
+    color: #8b6fcb;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    body {
+      background-color: #333;
+      color: #ddd;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    strong,
+    b {
+      color: #eee;
+    }
+
+    a {
+      color: #8cc2dd;
+    }
+
+    code {
+      background-color: #777;
+    }
+
+    pre code {
+      color: #ddd;
+    }
+
+    blockquote {
+      color: #ccc;
+    }
+
+    textarea,
+    input {
+      background-color: #252525;
+      color: #ddd;
+    }
+
+    .helptext {
+      color: #aaa;
+    }
+  }
+
+</style>
+
+</head>
+
+<body>
+  <header><a href="/" class="title">
+  <h2>ᕕ( ᐛ )ᕗ xiaoli&#39;s blog</h2>
+</a>
+<nav><a href="/">Home</a>
+
+<a href="/diary/">diary</a>
+
+
+<a href="/blog">Blog</a>
+
+</nav>
+</header>
+  <main>
+
+<h1>使用git rebase合并冲突</h1>
+<p>
+  <i>
+    <time datetime='2022-11-15' pubdate>
+      15 Nov, 2022
+    </time>
+  </i>
+</p>
+
+<content>
+  <blockquote>
+<p>今天在公司使用git rebase master解冲突失败，同事悉心教我，下来再研究一下。</p>
+</blockquote>
+<h2 id="git-rebase-master">git rebase master</h2>
+<h4 id="回退分支"> 回退分支</h4>
+<p><strong>这一步可以跳过</strong>，只是我错误rebase操作导致目前分支代码不正常，需要先回滚代码。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>git log
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>commit b77bd104afddea0cb0c861dd03ecd3350848xxxx <span style="color:#f92672">(</span>HEAD -&gt; i18n_author_guide, origin/i18n_author_guide<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Author: lishenyu &lt;lishenyu@xx.com&gt;
+</span></span><span style="display:flex;"><span>Date:   Mon Nov <span style="color:#ae81ff">14</span> 20:16:42 <span style="color:#ae81ff">2022</span> +0800
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    fix: rebase master
+</span></span><span style="display:flex;"><span>commit 1afc280edcc522f1749112476a0406ba0683xxxx
+</span></span><span style="display:flex;"><span>Author: zheng &lt;zheng@xx.com&gt;
+</span></span><span style="display:flex;"><span>Date:   Wed Nov <span style="color:#ae81ff">9</span> 14:14:16 <span style="color:#ae81ff">2022</span> +0800
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    fix: idl更新
+</span></span></code></pre></div><p>可以看到，我需要通过logID回退到历史版本。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>git reset --hard 1afc280edcc522f1749112476a0406ba0683xxxx                                            
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>HEAD is now at 1afc280 fix: idl更新
+</span></span></code></pre></div><p><code>git reset</code>实现回退操作。首先需要明确三个区域：工作区/ 暂存区/ Repository。<br>
+我们对工作区中的代码进行修改，使用git add .将修改的所有代码添加到暂存区，使用git push将暂存区中的代码提交到远程的Repository。<img src="area.webp" alt=""></p>
+<ul>
+<li>–hard 撤销<strong>工作区</strong>所有未提交修改，将<strong>暂存区</strong>和<strong>工作区</strong>都回到上一个版本，删除之前的提交信息</li>
+<li>–soft 保留<strong>工作目录</strong>中的内容，把新内容放置在<strong>暂存区</strong>。</li>
+<li>–mixed 所有修改放在工作目录 ⚠️：git reset后再次push会引发冲突，需要push -f</li>
+</ul>
+<h4 id="1-git-rebase-master">1. git rebase master</h4>
+<p>确保master分支已于远程同步，使用<code>git rebase master</code>，解决冲突。<br>
+对于冲突的解决需要看清楚，如果是业务冲突需要手动合并，如果是框架生成的代码冲突需要按照master的代码来。<br>
+如果rebase时存在冲突，可以使用goland的可视化工具，git-&gt;resolve conflicts，出现此次rebase冲突的代码，可以直接点击进入响应文件进行冲突的手动解决。<br>
+<img src="merge_conflicts1.png" alt=""></p>
+<p>左边是自己分支的代码，右边是要rebase的分支的代码，中间是修改后的代码。根据需要accept left或accept right。点击apply后自动实现 git add .,下一步可以直接<code>git rebase --continue</code>。<img src="resolve_conflicts.png" alt=""></p>
+<h4 id="2-git-push--f">2. git push -f</h4>
+<p>当解决完所有的冲突成功合并后，需要使用push -f强制推到远端。<br>
+需要注意：git rebase后提交，相当于将自己的分支提交到了master分支后面，<br>
+用下面两个动图可能更加清晰：<br>
+merge:<img src="rebase.gif" alt="">rebase:<img src="master.gif" alt=""></p>
+<h3 id="git-rebase的其他指令">git rebase的其他指令</h3>
+<p>同时，在使用rebase master合并分支的时候，有时也会看到终端提示<code>git rebase --continue</code>\ <code>git rebase --abort</code> \ <code>git rebase --skip</code></p>
+<ul>
+<li>前两个我们都熟悉，第一个是解决冲突后的继续合并，第二个是放弃当前的所有合并还原代码。那么第三个呢？因为我就是使用第三个命令后所以屡屡丢代码～<br>
+对于git rebase 的过程，其实分两步。</li>
+</ul>
+<ol>
+<li>产生master分支的备份，放在临时分支</li>
+<li>在临时分支上应用当前分支的每一次<strong>提交</strong>，如果出现冲突就会终止<br>
+而这个git rebase –skip，其实就是跳过某次提交，所以合并到最后肯定会丢代码。😅慎用该指令哈。</li>
+</ol>
+<h2 id="参考">参考</h2>
+<p>git reset: <a href="https://www.jianshu.com/p/c2ec5f06cf1a">https://www.jianshu.com/p/c2ec5f06cf1a</a><br>
+resolve conflicts: <a href="https://www.jetbrains.com/help/go/resolve-conflicts.html">https://www.jetbrains.com/help/go/resolve-conflicts.html</a><br>
+rebase和merge: <a href="https://waynerv.com/posts/git-rebase-intro/">https://waynerv.com/posts/git-rebase-intro/</a></p>
+
+</content>
+<p>
+  
+  <a href="https://zerlina-ysl.github.io/tags/git/">#git</a>
+  
+</p>
+
+  </main>
+  <footer>Made with <a href="https://github.com/janraasch/hugo-bearblog/">Hugo ʕ•ᴥ•ʔ Bear</a>
+</footer>
+
+    
+</body>
+
+</html>

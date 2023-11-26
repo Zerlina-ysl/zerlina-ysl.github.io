@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>微服务 on ᕕ( ᐛ )ᕗ xiaoli&#39;s blog</title>
+    <link>https://zerlina-ysl.github.io/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/</link>
+    <description>Recent content in 微服务 on ᕕ( ᐛ )ᕗ xiaoli&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 18 Nov 2022 23:06:45 +0800</lastBuildDate>
+    <atom:link href="https://zerlina-ysl.github.io/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>浅谈微服务架构</title>
+      <link>https://zerlina-ysl.github.io/blog/microservice/</link>
+      <pubDate>Fri, 18 Nov 2022 23:06:45 +0800</pubDate>
+      <guid>https://zerlina-ysl.github.io/blog/microservice/</guid>
+      <description>是什么？ 微服务以专注于单一责任与功能的小型功能区块为基础，利用模块化组合出复杂的大型应用程序，各区块可以使用与语言无关的api相互通讯。 服务框架的构建是一个持续演进的过程。
+单体架构 最初的服务，如实现一个小说app，我们会把所有的功能都实现在一个程序，将各种功能按照高内聚低耦合的理念划分成多个模块(书成模块、登陆模块、书架模块等等…)。一个服务就是一个应用。
+随着访问量增多，服务器压力变大，为了支持业务发展，首先选择了最直接的方法—加机器。
+因此需要负载均衡来支持流量增长。所有的请求需要通过一层负载均衡，再打到最终的服务上。
+但随着业务的发展、产品的迭代，单体架构的缺陷愈发明显：
+所有功能高度耦合，互相影响，难以管理，团队合作受限 部分的逻辑修改也需要对整体服务进行开发和测试，采用瀑布式开发模型，开发周期长迭代慢。且需要影响全部服务的重建和部署，成本高 一个小bug可能会导致整个系统的崩溃
+因此，需要对单体架构进行解耦！ 面向服务 借助单体架构的功能划分，将单体架构划分为几个大的服务应用。 每个服务应用内部通过负载均衡横向扩展。 拆分后的每个服务应用创建自己的接口定义，以便被其他服务发现 服务之间的通讯类似于计租中的总线原理：通过一个独立的中间件提供消息通讯
+以上是简易版企业服务总线的初步设计，系统的所有流量通过通信总线进行路由分发。但随着流量的激增，通信总线会出现问题，通信总线成为了整个系统的中心化节点和瓶颈，影响了系统的扩展性和稳定性。 SOA 去中心化。
+对于通信总线分发流量而导致的问题，使用DNS+IP网络架构解决。
+域名：为每个服务定义一个psm(product.subsystem.module)作为服务的域名 IP：服务实例其实就是一个机器终端，拥有自己的ip地址 根服务器： 维护psm-&amp;gt;ip的映射，实现服务发现 服务注册：每个服务实例在创建后不断的向注册中心上报自己的地址(psm-ip)和实例状态 服务治理：注册中心维护着每个服务对应的实例地址列表及其健康状态 服务发现：实例定时向注册中心获取要访问的服务的实例地址，访问时通过负载均衡选择其中一个p2p来访问，流量不经由注册中心转发。负载均衡通过服务本身来实现。 通信协议：服务提供IDL文件，通过统一的rpc进行通信。 引入gateway将外部流量转换为内部请求。注册中心可以多实例部署，集群内部使用分布式算法保证其最终一致性。可以对服务进行更细粒度的拆分。
+一个注册中心所具有的基本功能： 注册服务实例信息；心跳机制；剔除失败的服务实例；查询服务实例信息。
+如何注册和发现服务？ 在微服务架构下，主要有三种角色：服务提供者（RPC Server）、服务消费者（RPC Client）和服务注册中心（Registry）。
+RPC Server 提供服务，在启动时，根据服务发布文件 server.xml 中的配置的信息，向 Registry 注册自身服务，并向 Registry 定期发送心跳汇报存活状态。
+RPC Client 调用服务，在启动时，根据服务引用文件 client.xml 中配置的信息，向 Registry 订阅服务，把 Registry 返回的服务节点列表缓存在本地内存中，并与 RPC Sever 建立连接。
+当 RPC Server 节点发生变更时，Registry 会同步变更，RPC Client 感知后会刷新本地内存中缓存的服务节点列表。
+RPC Client 从本地缓存的服务节点列表中，基于负载均衡算法选择一台 RPC Sever 发起调用。</description>
+    </item>
+  </channel>
+</rss>
