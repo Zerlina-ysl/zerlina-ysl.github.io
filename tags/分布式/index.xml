@@ -6,12 +6,12 @@
     <description>Recent content in 分布式 on ᕕ( ᐛ )ᕗ xiaoli&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 06 Mar 2023 16:18:03 +0800</lastBuildDate>
-    <atom:link href="https://zerlina-ysl.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 06 Mar 2023 16:18:03 +0800</lastBuildDate><atom:link href="https://zerlina-ysl.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>浅浅学习分布式算法</title>
       <link>https://zerlina-ysl.github.io/blog/distrubute_algorithms/</link>
       <pubDate>Mon, 06 Mar 2023 16:18:03 +0800</pubDate>
+      
       <guid>https://zerlina-ysl.github.io/blog/distrubute_algorithms/</guid>
       <description>Paxos Paxos是一个共识(consensus)算法，共识算法解决的是分布式系统对某个提案（Proposal），大部分节点达成一致意见的过程。 保证最终只有一个提案会被选定，提案被选定后进程也可以获取到被选定的提案。
 前提 假设不同参与者可以通过发送消息来通信，并使用普通的非拜占庭模式的异步模型，即每个参与者以任意速度执行，可能会出错而停止，也可能会重启,消息在传输中可能会花费任意的时间，可能会重复、丢失，但不会被损坏，即其内容不会被篡改，不会发生拜占庭式问题。
@@ -47,5 +47,6 @@ A2 A3 会将共识发送给L1，并回复P2。
 活锁问题 P1提交的Proposal被拒绝时，可能存在因为Acceptor承诺返回了更大编号的Proposal，P1提高Proposal编号继续提交。一旦出现这种情况，两个Proposer都发现自己的编号过低转而提出更高编号的Proposal，这会导致死循环，该现象被称为活锁。你编号高，我再比你更高，反复如此，算法永远无法结束。
 对于Basic Paxos来说，具有活锁问题，每次只能对单个提案形成决议，而决议的形成至少需要两次网络请求和应答，如果每个命令都需要通过Basic Paxos算法达到一致，会产生大量开销。 Basic Paxos的价值在于开拓了分布式共识算法的发展思路，但无法直接用于实践，只能作为学术研究。但是正如Mike Burrows所说，”There is only one consensus protocol, and that&amp;rsquo;s “Paxos” — all other approaches a re just broken versions of Paxos“，许多实际应用的分布式算法如Raft、ZAB等都是基于Basic Paxos的改进。</description>
     </item>
+    
   </channel>
 </rss>

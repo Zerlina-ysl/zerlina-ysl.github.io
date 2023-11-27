@@ -6,29 +6,49 @@
     <description>Recent content on ᕕ( ᐛ )ᕗ xiaoli&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 26 Nov 2023 23:46:13 +0800</lastBuildDate>
-    <atom:link href="https://zerlina-ysl.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 27 Nov 2023 23:54:28 +0800</lastBuildDate><atom:link href="https://zerlina-ysl.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>记录mit6.824-lab1</title>
+      <link>https://zerlina-ysl.github.io/blog/6.824_lab1/</link>
+      <pubDate>Mon, 27 Nov 2023 23:54:28 +0800</pubDate>
+      
+      <guid>https://zerlina-ysl.github.io/blog/6.824_lab1/</guid>
+      <description>环境准备 https://pdos.csail.mit.edu/6.824/notes/l01.txt
+http://nil.csail.mit.edu/6.824/2022/labs/lab-mr.html
+Go version:http://nil.csail.mit.edu/6.824/2022/labs/go.html
+本质 建议把示例中的调用逻辑整理清晰，并把相关的描述文档多看几遍。
+lab1本质上由单worker单coordinator变成三个worker单coodinator，处理好并发安全就可以。
+go语言处理并发安全无非那老一套：使用channel通信；加锁。
+流程图 使用飞书画的，好可爱!!!
+脚本测试过程 // 构建插件 go build -race -buildmode=plugin ../mrapps/wc.go rm mr-out* // 每个文件就是map的输入 go run -race mrcoordinator.go pg-*.txt go build -race -buildmode=plugin ../mrapps/wc.go go run -race mrworker.go wc.so cat mr-out-* | sort | more -------- // 也可以直接运行： bash test-mr.sh 测试共包含8个，全部PASS算通过；建议将不通过的脚本单独复制出来测试。
+代码 https://github.com/Zerlina-ysl/6.824
+参考 https://blog.csdn.net/weixin_45938441/article/details/124018485</description>
+    </item>
+    
     <item>
       <title>Hello-world!</title>
       <link>https://zerlina-ysl.github.io/diary/hello-world/</link>
       <pubDate>Sun, 26 Nov 2023 23:46:13 +0800</pubDate>
+      
       <guid>https://zerlina-ysl.github.io/diary/hello-world/</guid>
       <description>好吧，又换了个主题，花费一些时间将之前的文章全部迁移过来啦，还是简单的风格最耐看。捣鼓捣鼓打算延续写博客的习惯。哪怕三分钟热度，希望这次可以坚持的久一些&amp;hellip;
 分为两个模块，技术和日记。
 技术还是工作的时候遇到的一些想学的、好玩的、没听过的。
 日记就是写一些感触吧。
-接下来就是一些待办啦～
-[] 实现most recent blogs.类似于https://herman.bearblog.dev/
+[] 实现most recent blogs.类似于https://herman.bearblog.dev/ hugo-bearblog和bearblog是两个项目；可以考虑自己实现这个功能，并提一个pr。
 [] 实现字数统计
-[] 新博客的第一篇文章:mit6.824 lab1
 [] 新博客的第二篇文章: go语言指针和浅拷贝
-包括以后关于网站功能的更新，也增加在这里。
-格式： YYYY-MM-DD [add/fix/remove]function:description</description>
+[] GitHub Action自动发布
+[] 支持点击查看图片
+更新记录 格式： YYYY-MM-DD [add/fix/remove]function:description
+2023-11-27 [add] 使用utterances实现博客评论功能</description>
     </item>
+    
     <item>
       <title>浅浅学习分布式算法</title>
       <link>https://zerlina-ysl.github.io/blog/distrubute_algorithms/</link>
       <pubDate>Mon, 06 Mar 2023 16:18:03 +0800</pubDate>
+      
       <guid>https://zerlina-ysl.github.io/blog/distrubute_algorithms/</guid>
       <description>Paxos Paxos是一个共识(consensus)算法，共识算法解决的是分布式系统对某个提案（Proposal），大部分节点达成一致意见的过程。 保证最终只有一个提案会被选定，提案被选定后进程也可以获取到被选定的提案。
 前提 假设不同参与者可以通过发送消息来通信，并使用普通的非拜占庭模式的异步模型，即每个参与者以任意速度执行，可能会出错而停止，也可能会重启,消息在传输中可能会花费任意的时间，可能会重复、丢失，但不会被损坏，即其内容不会被篡改，不会发生拜占庭式问题。
@@ -64,10 +84,12 @@ A2 A3 会将共识发送给L1，并回复P2。
 活锁问题 P1提交的Proposal被拒绝时，可能存在因为Acceptor承诺返回了更大编号的Proposal，P1提高Proposal编号继续提交。一旦出现这种情况，两个Proposer都发现自己的编号过低转而提出更高编号的Proposal，这会导致死循环，该现象被称为活锁。你编号高，我再比你更高，反复如此，算法永远无法结束。
 对于Basic Paxos来说，具有活锁问题，每次只能对单个提案形成决议，而决议的形成至少需要两次网络请求和应答，如果每个命令都需要通过Basic Paxos算法达到一致，会产生大量开销。 Basic Paxos的价值在于开拓了分布式共识算法的发展思路，但无法直接用于实践，只能作为学术研究。但是正如Mike Burrows所说，”There is only one consensus protocol, and that&amp;rsquo;s “Paxos” — all other approaches a re just broken versions of Paxos“，许多实际应用的分布式算法如Raft、ZAB等都是基于Basic Paxos的改进。</description>
     </item>
+    
     <item>
       <title>云原生之k8s入门</title>
       <link>https://zerlina-ysl.github.io/blog/devops_k8s/</link>
       <pubDate>Wed, 22 Feb 2023 20:16:40 +0800</pubDate>
+      
       <guid>https://zerlina-ysl.github.io/blog/devops_k8s/</guid>
       <description>在学习docker的时候我们说到，docker的使用标志着进入容器化时代，但随之也产生了许多问题：
 如何协调和调度这些容器？ 如何保证升级应用时不会中断服务的提供？ 如何监控容器的运行状况？ 如何批量操作容器中的应用？ &amp;hellip;&amp;hellip; 解决这些问题所需要的就是容器编排技术，k8s是当前流行的大规模容器编排系统。
@@ -76,10 +98,12 @@ A2 A3 会将共识发送给L1，并回复P2。
 以下命令默认在所有机器中都要执行
 1. 安装kubeadm 配置基础环境 #各个机器设置自己的域名 hostnamectl set-hostname xxxx # 刷新，显示主机名 bash # 将 SELinux 设置为 permissive 模式（相当于将其禁用） sudo setenforce 0 sudo sed -i &amp;#39;s/^SELINUX=enforcing$/SELINUX=permissive/&amp;#39; /etc/selinux/config #关闭swap swapoff -a sed -ri &amp;#39;s/.*swap.*/#&amp;amp;/&amp;#39; /etc/fstab #允许 iptables 检查桥接流量 cat &amp;lt;&amp;lt;EOF | sudo tee /etc/modules-load.d/k8s.conf br_netfilter EOF cat &amp;lt;&amp;lt;EOF | sudo tee /etc/sysctl.</description>
     </item>
+    
     <item>
       <title>2022，我这一年</title>
       <link>https://zerlina-ysl.github.io/diary/my2022/</link>
       <pubDate>Sun, 05 Feb 2023 23:07:02 +0800</pubDate>
+      
       <guid>https://zerlina-ysl.github.io/diary/my2022/</guid>
       <description>本该早都完成的年终总结，拖到了2023年的元宵。这个年过得还不错，看到了美丽的烟花，听到了鞭炮声。
 一月，变幻莫测 我告别当时的对象，准备开启长达半年的异地生活。
@@ -102,10 +126,12 @@ qxm和我聊了很多，告诉我并没有哪条路是正确或错误的，我�
 2022年，我没有停止阅读，也没有放弃音药，更没有停下对计算机科学这门庞杂和深奥的学科学习和探索的过程。尽管前路黑暗，尽管我不是优秀的那个，但长夜终明。我相信自己，并且一直相信。
 &amp;ldquo;我宁愿痛苦，我不要麻木&amp;rdquo;。</description>
     </item>
+    
     <item>
       <title>2022-06-26-2022-12-31 实习日记</title>
       <link>https://zerlina-ysl.github.io/diary/intern/</link>
       <pubDate>Thu, 12 Jan 2023 23:24:47 +0800</pubDate>
+      
       <guid>https://zerlina-ysl.github.io/diary/intern/</guid>
       <description>以下是实习时的碎碎念，包括知道自己不能转正的失望沮丧、在北京一个人的孤单难过和对未来的一些迷茫，现在读起来很幼稚，但是不舍得删，之前在飞书文档里记录着，现在转载到这里
 关于面试10.28 遇到好的面试官/面试官问到好的问题，真的是感觉这几十分钟值得了，哪怕面试没过也值得了。好的问题就是思维的开阔，比如：微信抢红包案例，如果没有问到，我不会想着下来搜一搜，也不会想着了解一下，更不会坚定自己做一下秒杀的项目过一下场景。
@@ -152,10 +178,12 @@ qxm和我聊了很多，告诉我并没有哪条路是正确或错误的，我�
 但又不甘心这样，否则不会痛苦的一句又一句。
 想明白道理很简单，15s的抖音视频毫无营养，纯打发时间，纯解脱自己，无聊，可是好像沉醉在这之中才可以逃避现实。但现实又无法被逃避，自己也无法被解脱，对现状毫无影响，甚至更遭。</description>
     </item>
+    
     <item>
       <title>自动化流水线如何构建项目</title>
       <link>https://zerlina-ysl.github.io/blog/how_bytecycle_run/</link>
       <pubDate>Sat, 19 Nov 2022 23:15:09 +0800</pubDate>
+      
       <guid>https://zerlina-ysl.github.io/blog/how_bytecycle_run/</guid>
       <description>自动化流水线如何构建项目并运行？
 DevOps（Development和Operations的组合词）是一种重视“软件开发人员（Dev）”和“IT运维技术人员（Ops）”之间沟通合作的文化、运动或惯例。透过自动化“软件交付”和“架构变更”的流程，来使得构建、测试、发布软件能够更加地快捷、频繁和可靠。
@@ -175,10 +203,12 @@ LoadBalance 管理服务域名流量入口的七层负载均衡服务。
 参考 相爱相杀：Servicemesh和API Gateway关系深度探讨：https://skyao.io/post/202004-servicemesh-and-api-gateway/
 蚂蚁金服 API Gateway Mesh 思考与实践：https://www.infoq.cn/article/azCFGyTDGakZqaLEEDMN</description>
     </item>
+    
     <item>
       <title>浅谈微服务架构</title>
       <link>https://zerlina-ysl.github.io/blog/microservice/</link>
       <pubDate>Fri, 18 Nov 2022 23:06:45 +0800</pubDate>
+      
       <guid>https://zerlina-ysl.github.io/blog/microservice/</guid>
       <description>是什么？ 微服务以专注于单一责任与功能的小型功能区块为基础，利用模块化组合出复杂的大型应用程序，各区块可以使用与语言无关的api相互通讯。 服务框架的构建是一个持续演进的过程。
 单体架构 最初的服务，如实现一个小说app，我们会把所有的功能都实现在一个程序，将各种功能按照高内聚低耦合的理念划分成多个模块(书成模块、登陆模块、书架模块等等…)。一个服务就是一个应用。
@@ -197,10 +227,12 @@ RPC Client 调用服务，在启动时，根据服务引用文件 client.xml 中
 当 RPC Server 节点发生变更时，Registry 会同步变更，RPC Client 感知后会刷新本地内存中缓存的服务节点列表。
 RPC Client 从本地缓存的服务节点列表中，基于负载均衡算法选择一台 RPC Sever 发起调用。</description>
     </item>
+    
     <item>
       <title>使用git rebase合并冲突</title>
       <link>https://zerlina-ysl.github.io/blog/git_rebase/</link>
       <pubDate>Tue, 15 Nov 2022 00:18:23 +0800</pubDate>
+      
       <guid>https://zerlina-ysl.github.io/blog/git_rebase/</guid>
       <description>今天在公司使用git rebase master解冲突失败，同事悉心教我，下来再研究一下。
 git rebase master 回退分支 这一步可以跳过，只是我错误rebase操作导致目前分支代码不正常，需要先回滚代码。
@@ -209,12 +241,15 @@ git reset --hard 1afc280edcc522f1749112476a0406ba0683xxxx HEAD is now at 1afc280
 我们对工作区中的代码进行修改，使用git add .将修改的所有代码添加到暂存区，使用git push将暂存区中的代码提交到远程的Repository。
 –hard 撤销工作区所有未提交修改，将暂存区和工作区都回到上一个版本，删除之前的提交信息 –soft 保留工作目录中的内容，把新内容放置在暂存区。 –mixed 所有修改放在工作目录 ⚠️：git reset后再次push会引发冲突，需要push -f 1.</description>
     </item>
+    
     <item>
-      <title>diary</title>
+      <title>Diary</title>
       <link>https://zerlina-ysl.github.io/diary/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
       <guid>https://zerlina-ysl.github.io/diary/</guid>
       <description></description>
     </item>
+    
   </channel>
 </rss>

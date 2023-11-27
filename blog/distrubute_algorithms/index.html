@@ -5,6 +5,7 @@
   <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="shortcut icon" href="https://zerlina-ysl.github.io/img/favicon.png" />
 <title>浅浅学习分布式算法 | ᕕ( ᐛ )ᕗ xiaoli&#39;s blog</title>
 <meta name="title" content="浅浅学习分布式算法" />
 <meta name="description" content="分布式系统中如何保持各节点数据的一致性" />
@@ -17,7 +18,6 @@
 <meta property="og:url" content="https://zerlina-ysl.github.io/blog/distrubute_algorithms/" /><meta property="article:section" content="blog" />
 <meta property="article:published_time" content="2023-03-06T16:18:03+08:00" />
 <meta property="article:modified_time" content="2023-03-06T16:18:03+08:00" />
-
 
 
 
@@ -216,7 +216,7 @@
 </a>
 <nav><a href="/">Home</a>
 
-<a href="/diary/">diary</a>
+<a href="/diary/">Diary</a>
 
 
 <a href="/blog">Blog</a>
@@ -296,14 +296,14 @@
 </ol>
 <h3 id="basic-paxos">Basic Paxos</h3>
 <p>Paxos一致性算法分为两阶段提交：prepare阶段和Acceptor阶段</p>
-<h3 id="preparepngacceptpngprepare阶段"><img src="prepare.png" alt=""><img src="accept.png" alt="">Prepare阶段</h3>
+<h3 id="preparepngcontentblogdistrubute_algorithmsacceptpngprepare阶段"><img src="prepare.png" alt=""><img src="content/blog/distrubute_algorithms/accept.png" alt="">Prepare阶段</h3>
 <p>阶段 a：proposer选择一个提案编号n，并将携带编号n的prepare请求发送给大多数的Acceptor。</p>
 <p>阶段b：Acceptor收到Prepare消息后，如果提案编号大于它已经回复的所有prepare消息，Acceptor回复给Proposer一个promise消息，承诺不再接受小于n的提案。promise携带acceptor接受过的最大的编号。</p>
 <h4 id="acceptor阶段">Acceptor阶段</h4>
 <p>阶段a:  如果proposer从大多数acceptor中接收到对prepare请求的回复，它将向这些acceptors发送一个编号为n，value为v的accept请求，v是这些回复中最高编号的提案，或者响应报告中没有提案，v是任意值。</p>
 <p>阶段b:  如果一个acceptor收到了编号为n的acceptor请求，它会<strong>接受该提案</strong>。除非已经回复过编号大于n的prepare请求。</p>
 <h4 id="示例">示例</h4>
-<p><img src="prepare_accept.jpeg" alt="img"></p>
+<p><img src="content/blog/distrubute_algorithms/prepare_accept.jpeg" alt="img"></p>
 <ol>
 <li>
 <p>P2分别向A2 A3发送序号为2的prepare请求，A2 A3之前没有接受过序号更大的prepare消息，因此会向P2返回一个序号为2的promise请求。</p>
@@ -346,7 +346,7 @@ Basic Paxos的价值在于开拓了分布式共识算法的发展思路，但无
 <h3 id="log-replication">Log replication</h3>
 <p>每个客户端请求 包含被复制状态机(replicated state machine)执行的命令。leader将命令作为一个新的Entry追加到log，之后通过rpc调用使其他服务器节点复制该entry。当entry被安全的复制后，leader会在存储机中应用该entry，并响应客户端。被存储在state machine的log entry包含leader收到entry的任期和表明在log中位置的索引。</p>
 <p>leader决定什么时候应用entry到存储机(state machine)是安全的，此时entry被称为committed。一旦follower获知entry被应用，就会将entry应用在自己的state machine。raft确保commited是持久化的，并被<strong>所有</strong>state machine应用。</p>
-<p><img src="log_replicated.jpeg" alt=""></p>
+<p><img src="content/blog/distrubute_algorithms/log_replicated.jpeg" alt=""></p>
 <ol>
 <li>客户端发起请求,put(1,1)</li>
 <li>leader收到请求，将信息复制到replicated state machine</li>
@@ -377,7 +377,21 @@ Basic Paxos的价值在于开拓了分布式共识算法的发展思路，但无
 </p>
 
   </main>
-  <footer>Made with <a href="https://github.com/janraasch/hugo-bearblog/">Hugo ʕ•ᴥ•ʔ Bear</a>
+  <footer>
+
+
+<script src="https://utteranc.es/client.js"
+repo="Zerlina-ysl/zerlina-ysl.github.io"
+issue-term="url"
+theme="github-light"
+crossorigin="anonymous"
+async>
+</script>
+  
+
+
+
+Made with <a href="https://github.com/Zerlina-ysl/zerlina-ysl.github.io/">Hugo ʕ•ᴥ•ʔ Bear</a>
 </footer>
 
     

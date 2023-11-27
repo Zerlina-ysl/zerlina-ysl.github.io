@@ -6,12 +6,12 @@
     <description>Recent content in kubernetes on ᕕ( ᐛ )ᕗ xiaoli&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 22 Feb 2023 20:16:40 +0800</lastBuildDate>
-    <atom:link href="https://zerlina-ysl.github.io/tags/kubernetes/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 22 Feb 2023 20:16:40 +0800</lastBuildDate><atom:link href="https://zerlina-ysl.github.io/tags/kubernetes/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>云原生之k8s入门</title>
       <link>https://zerlina-ysl.github.io/blog/devops_k8s/</link>
       <pubDate>Wed, 22 Feb 2023 20:16:40 +0800</pubDate>
+      
       <guid>https://zerlina-ysl.github.io/blog/devops_k8s/</guid>
       <description>在学习docker的时候我们说到，docker的使用标志着进入容器化时代，但随之也产生了许多问题：
 如何协调和调度这些容器？ 如何保证升级应用时不会中断服务的提供？ 如何监控容器的运行状况？ 如何批量操作容器中的应用？ &amp;hellip;&amp;hellip; 解决这些问题所需要的就是容器编排技术，k8s是当前流行的大规模容器编排系统。
@@ -20,5 +20,6 @@
 以下命令默认在所有机器中都要执行
 1. 安装kubeadm 配置基础环境 #各个机器设置自己的域名 hostnamectl set-hostname xxxx # 刷新，显示主机名 bash # 将 SELinux 设置为 permissive 模式（相当于将其禁用） sudo setenforce 0 sudo sed -i &amp;#39;s/^SELINUX=enforcing$/SELINUX=permissive/&amp;#39; /etc/selinux/config #关闭swap swapoff -a sed -ri &amp;#39;s/.*swap.*/#&amp;amp;/&amp;#39; /etc/fstab #允许 iptables 检查桥接流量 cat &amp;lt;&amp;lt;EOF | sudo tee /etc/modules-load.d/k8s.conf br_netfilter EOF cat &amp;lt;&amp;lt;EOF | sudo tee /etc/sysctl.</description>
     </item>
+    
   </channel>
 </rss>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>mit6.824 on ᕕ( ᐛ )ᕗ xiaoli&#39;s blog</title>
+    <link>https://zerlina-ysl.github.io/tags/mit6.824/</link>
+    <description>Recent content in mit6.824 on ᕕ( ᐛ )ᕗ xiaoli&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 27 Nov 2023 23:54:28 +0800</lastBuildDate><atom:link href="https://zerlina-ysl.github.io/tags/mit6.824/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>记录mit6.824-lab1</title>
+      <link>https://zerlina-ysl.github.io/blog/6.824_lab1/</link>
+      <pubDate>Mon, 27 Nov 2023 23:54:28 +0800</pubDate>
+      
+      <guid>https://zerlina-ysl.github.io/blog/6.824_lab1/</guid>
+      <description>环境准备 https://pdos.csail.mit.edu/6.824/notes/l01.txt
+http://nil.csail.mit.edu/6.824/2022/labs/lab-mr.html
+Go version:http://nil.csail.mit.edu/6.824/2022/labs/go.html
+本质 建议把示例中的调用逻辑整理清晰，并把相关的描述文档多看几遍。
+lab1本质上由单worker单coordinator变成三个worker单coodinator，处理好并发安全就可以。
+go语言处理并发安全无非那老一套：使用channel通信；加锁。
+流程图 使用飞书画的，好可爱!!!
+脚本测试过程 // 构建插件 go build -race -buildmode=plugin ../mrapps/wc.go rm mr-out* // 每个文件就是map的输入 go run -race mrcoordinator.go pg-*.txt go build -race -buildmode=plugin ../mrapps/wc.go go run -race mrworker.go wc.so cat mr-out-* | sort | more -------- // 也可以直接运行： bash test-mr.sh 测试共包含8个，全部PASS算通过；建议将不通过的脚本单独复制出来测试。
+代码 https://github.com/Zerlina-ysl/6.824
+参考 https://blog.csdn.net/weixin_45938441/article/details/124018485</description>
+    </item>
+    
+  </channel>
+</rss>

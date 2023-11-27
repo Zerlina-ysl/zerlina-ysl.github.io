@@ -5,6 +5,7 @@
   <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="shortcut icon" href="https://zerlina-ysl.github.io/img/favicon.png" />
 <title>使用git rebase合并冲突 | ᕕ( ᐛ )ᕗ xiaoli&#39;s blog</title>
 <meta name="title" content="使用git rebase合并冲突" />
 <meta name="description" content="git解决冲突那些事" />
@@ -17,7 +18,6 @@
 <meta property="og:url" content="https://zerlina-ysl.github.io/blog/git_rebase/" /><meta property="article:section" content="blog" />
 <meta property="article:published_time" content="2022-11-15T00:18:23+08:00" />
 <meta property="article:modified_time" content="2022-11-15T00:18:23+08:00" />
-
 
 
 
@@ -216,7 +216,7 @@
 </a>
 <nav><a href="/">Home</a>
 
-<a href="/diary/">diary</a>
+<a href="/diary/">Diary</a>
 
 
 <a href="/blog">Blog</a>
@@ -258,7 +258,7 @@
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>HEAD is now at 1afc280 fix: idl更新
 </span></span></code></pre></div><p><code>git reset</code>实现回退操作。首先需要明确三个区域：工作区/ 暂存区/ Repository。<br>
-我们对工作区中的代码进行修改，使用git add .将修改的所有代码添加到暂存区，使用git push将暂存区中的代码提交到远程的Repository。<img src="area.webp" alt=""></p>
+我们对工作区中的代码进行修改，使用git add .将修改的所有代码添加到暂存区，使用git push将暂存区中的代码提交到远程的Repository。<img src="content/blog/git_rebase/area.webp" alt=""></p>
 <ul>
 <li>–hard 撤销<strong>工作区</strong>所有未提交修改，将<strong>暂存区</strong>和<strong>工作区</strong>都回到上一个版本，删除之前的提交信息</li>
 <li>–soft 保留<strong>工作目录</strong>中的内容，把新内容放置在<strong>暂存区</strong>。</li>
@@ -268,13 +268,13 @@
 <p>确保master分支已于远程同步，使用<code>git rebase master</code>，解决冲突。<br>
 对于冲突的解决需要看清楚，如果是业务冲突需要手动合并，如果是框架生成的代码冲突需要按照master的代码来。<br>
 如果rebase时存在冲突，可以使用goland的可视化工具，git-&gt;resolve conflicts，出现此次rebase冲突的代码，可以直接点击进入响应文件进行冲突的手动解决。<br>
-<img src="merge_conflicts1.png" alt=""></p>
-<p>左边是自己分支的代码，右边是要rebase的分支的代码，中间是修改后的代码。根据需要accept left或accept right。点击apply后自动实现 git add .,下一步可以直接<code>git rebase --continue</code>。<img src="resolve_conflicts.png" alt=""></p>
+<img src="content/blog/git_rebase/merge_conflicts1.png" alt=""></p>
+<p>左边是自己分支的代码，右边是要rebase的分支的代码，中间是修改后的代码。根据需要accept left或accept right。点击apply后自动实现 git add .,下一步可以直接<code>git rebase --continue</code>。<img src="content/blog/git_rebase/resolve_conflicts.png" alt=""></p>
 <h4 id="2-git-push--f">2. git push -f</h4>
 <p>当解决完所有的冲突成功合并后，需要使用push -f强制推到远端。<br>
 需要注意：git rebase后提交，相当于将自己的分支提交到了master分支后面，<br>
 用下面两个动图可能更加清晰：<br>
-merge:<img src="rebase.gif" alt="">rebase:<img src="master.gif" alt=""></p>
+merge:<img src="content/blog/git_rebase/rebase.gif" alt="">rebase:<img src="content/blog/git_rebase/master.gif" alt=""></p>
 <h3 id="git-rebase的其他指令">git rebase的其他指令</h3>
 <p>同时，在使用rebase master合并分支的时候，有时也会看到终端提示<code>git rebase --continue</code>\ <code>git rebase --abort</code> \ <code>git rebase --skip</code></p>
 <ul>
@@ -299,7 +299,21 @@ rebase和merge: <a href="https://waynerv.com/posts/git-rebase-intro/">https://w
 </p>
 
   </main>
-  <footer>Made with <a href="https://github.com/janraasch/hugo-bearblog/">Hugo ʕ•ᴥ•ʔ Bear</a>
+  <footer>
+
+
+<script src="https://utteranc.es/client.js"
+repo="Zerlina-ysl/zerlina-ysl.github.io"
+issue-term="url"
+theme="github-light"
+crossorigin="anonymous"
+async>
+</script>
+  
+
+
+
+Made with <a href="https://github.com/Zerlina-ysl/zerlina-ysl.github.io/">Hugo ʕ•ᴥ•ʔ Bear</a>
 </footer>
 
     

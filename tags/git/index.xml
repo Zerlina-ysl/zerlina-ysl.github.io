@@ -6,12 +6,12 @@
     <description>Recent content in git on ᕕ( ᐛ )ᕗ xiaoli&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 15 Nov 2022 00:18:23 +0800</lastBuildDate>
-    <atom:link href="https://zerlina-ysl.github.io/tags/git/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 15 Nov 2022 00:18:23 +0800</lastBuildDate><atom:link href="https://zerlina-ysl.github.io/tags/git/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>使用git rebase合并冲突</title>
       <link>https://zerlina-ysl.github.io/blog/git_rebase/</link>
       <pubDate>Tue, 15 Nov 2022 00:18:23 +0800</pubDate>
+      
       <guid>https://zerlina-ysl.github.io/blog/git_rebase/</guid>
       <description>今天在公司使用git rebase master解冲突失败，同事悉心教我，下来再研究一下。
 git rebase master 回退分支 这一步可以跳过，只是我错误rebase操作导致目前分支代码不正常，需要先回滚代码。
@@ -20,5 +20,6 @@ git reset --hard 1afc280edcc522f1749112476a0406ba0683xxxx HEAD is now at 1afc280
 我们对工作区中的代码进行修改，使用git add .将修改的所有代码添加到暂存区，使用git push将暂存区中的代码提交到远程的Repository。
 –hard 撤销工作区所有未提交修改，将暂存区和工作区都回到上一个版本，删除之前的提交信息 –soft 保留工作目录中的内容，把新内容放置在暂存区。 –mixed 所有修改放在工作目录 ⚠️：git reset后再次push会引发冲突，需要push -f 1.</description>
     </item>
+    
   </channel>
 </rss>

@@ -5,6 +5,7 @@
   <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="shortcut icon" href="https://zerlina-ysl.github.io/img/favicon.png" />
 <title>云原生之k8s入门 | ᕕ( ᐛ )ᕗ xiaoli&#39;s blog</title>
 <meta name="title" content="云原生之k8s入门" />
 <meta name="description" content="参照尚硅谷的《云原生Java架构师的第一课K8s&#43;Docker&#43;KubeSphere&#43;DevOps》" />
@@ -17,7 +18,6 @@
 <meta property="og:url" content="https://zerlina-ysl.github.io/blog/devops_k8s/" /><meta property="article:section" content="blog" />
 <meta property="article:published_time" content="2023-02-22T20:16:40+08:00" />
 <meta property="article:modified_time" content="2023-02-22T20:16:40+08:00" />
-
 
 
 
@@ -216,7 +216,7 @@
 </a>
 <nav><a href="/">Home</a>
 
-<a href="/diary/">diary</a>
+<a href="/diary/">Diary</a>
 
 
 <a href="/blog">Blog</a>
@@ -256,7 +256,7 @@ k8s提供了弹性运行分布式系统框架，满足扩展要求、故障转�
 <h2 id="架构">架构</h2>
 <blockquote>
 <p><a href="https://kubernetes.io/docs/concepts/overview/components/">https://kubernetes.io/docs/concepts/overview/components/</a>
-<img src="components.svg" alt=""></p>
+<img src="content/blog/devops_k8s/components.svg" alt=""></p>
 </blockquote>
 <h2 id="集群部署">集群部署</h2>
 <p>k8s的集群创建需要最少三台机器，我在阿里云购买了三台centos服务器，对于服务器有以下要求。</p>
@@ -412,7 +412,7 @@ k8s提供了弹性运行分布式系统框架，满足扩展要求、故障转�
 </span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    --discovery-token-ca-cert-hash sha256:92dad63ae98727291c666b048098178e19c9b1584f560283fe2b5d8e9613a941
 </span></span></code></pre></div><p>返回&quot;This node has joined the cluster:&quot;,表明节点加入集群成功。<br>
 此时在<strong>主节点</strong>执行<code>kubectl get nodes</code>,可以看到集群中节点情况。此时集群部署成功。
-<img src="getNodes.png" alt=""></p>
+<img src="content/blog/devops_k8s/getNodes.png" alt=""></p>
 <ol start="4">
 <li>
 <p>验证kubernetes的集群能力
@@ -431,7 +431,7 @@ reboot重启三台机器，查看集群状态，会发现k8s集群状态不受�
 </span></span><span style="display:flex;"><span>kubectl edit svc kubernetes-dashboard -n kubernetes-dashboard
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># 找到端口</span>
 </span></span><span style="display:flex;"><span>kubectl get svc -A |grep kubernetes-dashboard
-</span></span></code></pre></div><p><img src="svc.png" alt="">
+</span></span></code></pre></div><p><img src="content/blog/devops_k8s/svc.png" alt="">
 会生成一个超过3万的端口号。对于32427，就是访问可视化界面的端口，需要在安全组放行。之后可以使用集群中任一机器的公网ip地址+32427，就可以访问可视化界面。<br>
 创建dash-usr.yaml,粘贴内容。</p>
 <pre tabindex="0"><code>#创建访问账号，准备一个yaml文件； vi dash-usr.yaml
@@ -464,7 +464,7 @@ eyJhbGciOiJSUzI1NiIsImtpZCI6IkstSF9iTUlCaTVNNFVTVW5CZVVJYzh0WjA1QlRuMERELXpRRW5x
 <p>In Kubernetes, <em>namespaces</em> provides a mechanism for isolating groups of resources within a single cluster. Names of resources need to be unique within a namespace, but not across namespaces. Namespace-based scoping is applicable only for namespaced objects <em>(e.g. Deployments, Services, etc)</em> and not for cluster-wide objects <em>(e.g. StorageClass, Nodes, PersistentVolumes, etc)</em>.</p>
 </blockquote>
 <p>namespace提供了一种在集群中隔离资源组的机制,每一个资源都有所属的namespace。可以使用<code>kubectl get ns</code>查询namespace的种类。也可以使用&quot;-n&quot;参数查询指定namespace的资源。
-<img src="namespace.png" alt=""><br>
+<img src="content/blog/devops_k8s/namespace.png" alt=""><br>
 可以使用<code>kubectl create/delete ns name</code>对namespace进行创建/删除，注意删除时会将namespace中的资源共同删除。<br>
 也可以使用yaml配置文件创建namespace，同理，删除.yaml文件(<code>kubectl delete -f .yaml</code>)就对namespace的删除。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>apiVersion: v1 <span style="color:#75715e"># 版本号</span>
@@ -987,7 +987,21 @@ PV和PVC主要用来高效挂载镜像文件。当pod需要挂载某个目录时
 </p>
 
   </main>
-  <footer>Made with <a href="https://github.com/janraasch/hugo-bearblog/">Hugo ʕ•ᴥ•ʔ Bear</a>
+  <footer>
+
+
+<script src="https://utteranc.es/client.js"
+repo="Zerlina-ysl/zerlina-ysl.github.io"
+issue-term="url"
+theme="github-light"
+crossorigin="anonymous"
+async>
+</script>
+  
+
+
+
+Made with <a href="https://github.com/Zerlina-ysl/zerlina-ysl.github.io/">Hugo ʕ•ᴥ•ʔ Bear</a>
 </footer>
 
     
