@@ -1,25 +1,6 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>kubernetes on ᕕ( ᐛ )ᕗ xiaoli&#39;s blog</title>
-    <link>https://zerlina-ysl.github.io/tags/kubernetes/</link>
-    <description>Recent content in kubernetes on ᕕ( ᐛ )ᕗ xiaoli&#39;s blog</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Wed, 22 Feb 2023 20:16:40 +0800</lastBuildDate><atom:link href="https://zerlina-ysl.github.io/tags/kubernetes/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>云原生之k8s入门</title>
-      <link>https://zerlina-ysl.github.io/blog/devops_k8s/</link>
-      <pubDate>Wed, 22 Feb 2023 20:16:40 +0800</pubDate>
-      
-      <guid>https://zerlina-ysl.github.io/blog/devops_k8s/</guid>
-      <description>在学习docker的时候我们说到，docker的使用标志着进入容器化时代，但随之也产生了许多问题：
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>kubernetes on ᕕ( ᐛ )ᕗ xiaoli's blog</title><link>https://zerlina-ysl.github.io/tags/kubernetes/</link><description>Recent content in kubernetes on ᕕ( ᐛ )ᕗ xiaoli's blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 22 Feb 2023 20:16:40 +0800</lastBuildDate><atom:link href="https://zerlina-ysl.github.io/tags/kubernetes/index.xml" rel="self" type="application/rss+xml"/><item><title>云原生之k8s入门</title><link>https://zerlina-ysl.github.io/blog/devops_k8s/</link><pubDate>Wed, 22 Feb 2023 20:16:40 +0800</pubDate><guid>https://zerlina-ysl.github.io/blog/devops_k8s/</guid><description>在学习docker的时候我们说到，docker的使用标志着进入容器化时代，但随之也产生了许多问题：
 如何协调和调度这些容器？ 如何保证升级应用时不会中断服务的提供？ 如何监控容器的运行状况？ 如何批量操作容器中的应用？ &amp;hellip;&amp;hellip; 解决这些问题所需要的就是容器编排技术，k8s是当前流行的大规模容器编排系统。
 服务发现和负载均衡。使用DNS名称或ip地址公开容器，k8s可以负载均衡并分配网络流量。 存储编排。允许自动挂载所选择的存储系统，如本地存储、公共云提供商等。 自动部署和回滚。可以自动化k8s创建新容、删除现有容器并将资源用于新容器 自动装箱计算。k8s可以管理容器所需的cpu和内存(RAM) 自我修复。 密钥和配置管理。k8s允许存储和管理敏感信息，可以在不重建容器镜像的情况下部署和更新密钥和应用程序配置，无需在堆栈配置中暴露密钥。 k8s提供了弹性运行分布式系统框架，满足扩展要求、故障转移、部署模式等。 架构 https://kubernetes.io/docs/concepts/overview/components/ 集群部署 k8s的集群创建需要最少三台机器，我在阿里云购买了三台centos服务器，对于服务器有以下要求。
 2cpu或更多 2GB或更多RAM 机器间可以互相通信、不能有重复的主机名、mac地址 禁用交换分区 对于三台服务器，创建了网段为171.31.0.0/16的专用网络，和网段为171.31.0.0/24的交换机，并让三台服务器位于该专用网络和交换机下。
 以下命令默认在所有机器中都要执行
-1. 安装kubeadm 配置基础环境 #各个机器设置自己的域名 hostnamectl set-hostname xxxx # 刷新，显示主机名 bash # 将 SELinux 设置为 permissive 模式（相当于将其禁用） sudo setenforce 0 sudo sed -i &amp;#39;s/^SELINUX=enforcing$/SELINUX=permissive/&amp;#39; /etc/selinux/config #关闭swap swapoff -a sed -ri &amp;#39;s/.*swap.*/#&amp;amp;/&amp;#39; /etc/fstab #允许 iptables 检查桥接流量 cat &amp;lt;&amp;lt;EOF | sudo tee /etc/modules-load.d/k8s.conf br_netfilter EOF cat &amp;lt;&amp;lt;EOF | sudo tee /etc/sysctl.</description>
-    </item>
-    
-  </channel>
-</rss>
+1. 安装kubeadm 配置基础环境 #各个机器设置自己的域名 hostnamectl set-hostname xxxx # 刷新，显示主机名 bash # 将 SELinux 设置为 permissive 模式（相当于将其禁用） sudo setenforce 0 sudo sed -i &amp;#39;s/^SELINUX=enforcing$/SELINUX=permissive/&amp;#39; /etc/selinux/config #关闭swap swapoff -a sed -ri &amp;#39;s/.*swap.*/#&amp;amp;/&amp;#39; /etc/fstab #允许 iptables 检查桥接流量 cat &amp;lt;&amp;lt;EOF | sudo tee /etc/modules-load.d/k8s.conf br_netfilter EOF cat &amp;lt;&amp;lt;EOF | sudo tee /etc/sysctl.</description></item></channel></rss>

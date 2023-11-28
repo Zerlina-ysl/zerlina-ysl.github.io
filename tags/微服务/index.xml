@@ -1,19 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>微服务 on ᕕ( ᐛ )ᕗ xiaoli&#39;s blog</title>
-    <link>https://zerlina-ysl.github.io/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/</link>
-    <description>Recent content in 微服务 on ᕕ( ᐛ )ᕗ xiaoli&#39;s blog</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Fri, 18 Nov 2022 23:06:45 +0800</lastBuildDate><atom:link href="https://zerlina-ysl.github.io/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>浅谈微服务架构</title>
-      <link>https://zerlina-ysl.github.io/blog/microservice/</link>
-      <pubDate>Fri, 18 Nov 2022 23:06:45 +0800</pubDate>
-      
-      <guid>https://zerlina-ysl.github.io/blog/microservice/</guid>
-      <description>是什么？ 微服务以专注于单一责任与功能的小型功能区块为基础，利用模块化组合出复杂的大型应用程序，各区块可以使用与语言无关的api相互通讯。 服务框架的构建是一个持续演进的过程。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>微服务 on ᕕ( ᐛ )ᕗ xiaoli's blog</title><link>https://zerlina-ysl.github.io/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/</link><description>Recent content in 微服务 on ᕕ( ᐛ )ᕗ xiaoli's blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 18 Nov 2022 23:06:45 +0800</lastBuildDate><atom:link href="https://zerlina-ysl.github.io/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/index.xml" rel="self" type="application/rss+xml"/><item><title>浅谈微服务架构</title><link>https://zerlina-ysl.github.io/blog/microservice/</link><pubDate>Fri, 18 Nov 2022 23:06:45 +0800</pubDate><guid>https://zerlina-ysl.github.io/blog/microservice/</guid><description>是什么？ 微服务以专注于单一责任与功能的小型功能区块为基础，利用模块化组合出复杂的大型应用程序，各区块可以使用与语言无关的api相互通讯。 服务框架的构建是一个持续演进的过程。
 单体架构 最初的服务，如实现一个小说app，我们会把所有的功能都实现在一个程序，将各种功能按照高内聚低耦合的理念划分成多个模块(书成模块、登陆模块、书架模块等等…)。一个服务就是一个应用。
 随着访问量增多，服务器压力变大，为了支持业务发展，首先选择了最直接的方法—加机器。
 因此需要负载均衡来支持流量增长。所有的请求需要通过一层负载均衡，再打到最终的服务上。
@@ -28,8 +13,4 @@
 RPC Server 提供服务，在启动时，根据服务发布文件 server.xml 中的配置的信息，向 Registry 注册自身服务，并向 Registry 定期发送心跳汇报存活状态。
 RPC Client 调用服务，在启动时，根据服务引用文件 client.xml 中配置的信息，向 Registry 订阅服务，把 Registry 返回的服务节点列表缓存在本地内存中，并与 RPC Sever 建立连接。
 当 RPC Server 节点发生变更时，Registry 会同步变更，RPC Client 感知后会刷新本地内存中缓存的服务节点列表。
-RPC Client 从本地缓存的服务节点列表中，基于负载均衡算法选择一台 RPC Sever 发起调用。</description>
-    </item>
-    
-  </channel>
-</rss>
+RPC Client 从本地缓存的服务节点列表中，基于负载均衡算法选择一台 RPC Sever 发起调用。</description></item></channel></rss>

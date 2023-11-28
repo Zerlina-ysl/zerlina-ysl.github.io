@@ -1,19 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>blog on ᕕ( ᐛ )ᕗ xiaoli&#39;s blog</title>
-    <link>https://zerlina-ysl.github.io/blog/</link>
-    <description>Recent content in blog on ᕕ( ᐛ )ᕗ xiaoli&#39;s blog</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Mon, 27 Nov 2023 23:54:28 +0800</lastBuildDate><atom:link href="https://zerlina-ysl.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>记录mit6.824-lab1</title>
-      <link>https://zerlina-ysl.github.io/blog/6.824_lab1/</link>
-      <pubDate>Mon, 27 Nov 2023 23:54:28 +0800</pubDate>
-      
-      <guid>https://zerlina-ysl.github.io/blog/6.824_lab1/</guid>
-      <description>环境准备 https://pdos.csail.mit.edu/6.824/notes/l01.txt
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>blog on ᕕ( ᐛ )ᕗ xiaoli's blog</title><link>https://zerlina-ysl.github.io/blog/</link><description>Recent content in blog on ᕕ( ᐛ )ᕗ xiaoli's blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 27 Nov 2023 23:54:28 +0800</lastBuildDate><atom:link href="https://zerlina-ysl.github.io/blog/index.xml" rel="self" type="application/rss+xml"/><item><title>记录mit6.824-lab1</title><link>https://zerlina-ysl.github.io/blog/6.824_lab1/</link><pubDate>Mon, 27 Nov 2023 23:54:28 +0800</pubDate><guid>https://zerlina-ysl.github.io/blog/6.824_lab1/</guid><description>环境准备 https://pdos.csail.mit.edu/6.824/notes/l01.txt
 http://nil.csail.mit.edu/6.824/2022/labs/lab-mr.html
 Go version:http://nil.csail.mit.edu/6.824/2022/labs/go.html
 本质 建议把示例中的调用逻辑整理清晰，并把相关的描述文档多看几遍。
@@ -22,16 +7,7 @@ go语言处理并发安全无非那老一套：使用channel通信；加锁。
 流程图 使用飞书画的，好可爱!!!
 脚本测试过程 // 构建插件 go build -race -buildmode=plugin ../mrapps/wc.go rm mr-out* // 每个文件就是map的输入 go run -race mrcoordinator.go pg-*.txt go build -race -buildmode=plugin ../mrapps/wc.go go run -race mrworker.go wc.so cat mr-out-* | sort | more -------- // 也可以直接运行： bash test-mr.sh 测试共包含8个，全部PASS算通过；建议将不通过的脚本单独复制出来测试。
 代码 https://github.com/Zerlina-ysl/6.824
-参考 https://blog.csdn.net/weixin_45938441/article/details/124018485</description>
-    </item>
-    
-    <item>
-      <title>浅浅学习分布式算法</title>
-      <link>https://zerlina-ysl.github.io/blog/distrubute_algorithms/</link>
-      <pubDate>Mon, 06 Mar 2023 16:18:03 +0800</pubDate>
-      
-      <guid>https://zerlina-ysl.github.io/blog/distrubute_algorithms/</guid>
-      <description>Paxos Paxos是一个共识(consensus)算法，共识算法解决的是分布式系统对某个提案（Proposal），大部分节点达成一致意见的过程。 保证最终只有一个提案会被选定，提案被选定后进程也可以获取到被选定的提案。
+参考 https://blog.csdn.net/weixin_45938441/article/details/124018485</description></item><item><title>浅浅学习分布式算法</title><link>https://zerlina-ysl.github.io/blog/distrubute_algorithms/</link><pubDate>Mon, 06 Mar 2023 16:18:03 +0800</pubDate><guid>https://zerlina-ysl.github.io/blog/distrubute_algorithms/</guid><description>Paxos Paxos是一个共识(consensus)算法，共识算法解决的是分布式系统对某个提案（Proposal），大部分节点达成一致意见的过程。 保证最终只有一个提案会被选定，提案被选定后进程也可以获取到被选定的提案。
 前提 假设不同参与者可以通过发送消息来通信，并使用普通的非拜占庭模式的异步模型，即每个参与者以任意速度执行，可能会出错而停止，也可能会重启,消息在传输中可能会花费任意的时间，可能会重复、丢失，但不会被损坏，即其内容不会被篡改，不会发生拜占庭式问题。
 拜占庭将军问题：某国有许多军队，军队的将军需要制定一个统一的行动计划&amp;mdash;进攻或撤退。将军们地理位置是分开的，只能靠通讯员通信，将军中存在叛徒，叛徒可以篡改消息，欺骗将军。~~理论研究显示，在3n+1的系统中，只有叛徒数目小于等于n，才有可能设计一个协议使得叛徒无论怎样作梗也能达成一致。~~即分布式计算中系统中的成员计算机可能出错而发送错误的信息，用于传递信息的通讯网络也可能导致信息损坏，使得网络中不同的成员关于全体协作的策略得出不同结论，从而破坏系统一致性
 Paxos算法假设所有信息都是完整的，没有被篡改和伪造。
@@ -63,30 +39,12 @@ P2为了将提案达成共识，会发生Acceptor请求，携带编号和value�
 A1会将共识发送给L1，并回复P1。
 A2 A3 会将共识发送给L1，并回复P2。
 活锁问题 P1提交的Proposal被拒绝时，可能存在因为Acceptor承诺返回了更大编号的Proposal，P1提高Proposal编号继续提交。一旦出现这种情况，两个Proposer都发现自己的编号过低转而提出更高编号的Proposal，这会导致死循环，该现象被称为活锁。你编号高，我再比你更高，反复如此，算法永远无法结束。
-对于Basic Paxos来说，具有活锁问题，每次只能对单个提案形成决议，而决议的形成至少需要两次网络请求和应答，如果每个命令都需要通过Basic Paxos算法达到一致，会产生大量开销。 Basic Paxos的价值在于开拓了分布式共识算法的发展思路，但无法直接用于实践，只能作为学术研究。但是正如Mike Burrows所说，”There is only one consensus protocol, and that&amp;rsquo;s “Paxos” — all other approaches a re just broken versions of Paxos“，许多实际应用的分布式算法如Raft、ZAB等都是基于Basic Paxos的改进。</description>
-    </item>
-    
-    <item>
-      <title>云原生之k8s入门</title>
-      <link>https://zerlina-ysl.github.io/blog/devops_k8s/</link>
-      <pubDate>Wed, 22 Feb 2023 20:16:40 +0800</pubDate>
-      
-      <guid>https://zerlina-ysl.github.io/blog/devops_k8s/</guid>
-      <description>在学习docker的时候我们说到，docker的使用标志着进入容器化时代，但随之也产生了许多问题：
+对于Basic Paxos来说，具有活锁问题，每次只能对单个提案形成决议，而决议的形成至少需要两次网络请求和应答，如果每个命令都需要通过Basic Paxos算法达到一致，会产生大量开销。 Basic Paxos的价值在于开拓了分布式共识算法的发展思路，但无法直接用于实践，只能作为学术研究。但是正如Mike Burrows所说，”There is only one consensus protocol, and that&amp;rsquo;s “Paxos” — all other approaches a re just broken versions of Paxos“，许多实际应用的分布式算法如Raft、ZAB等都是基于Basic Paxos的改进。</description></item><item><title>云原生之k8s入门</title><link>https://zerlina-ysl.github.io/blog/devops_k8s/</link><pubDate>Wed, 22 Feb 2023 20:16:40 +0800</pubDate><guid>https://zerlina-ysl.github.io/blog/devops_k8s/</guid><description>在学习docker的时候我们说到，docker的使用标志着进入容器化时代，但随之也产生了许多问题：
 如何协调和调度这些容器？ 如何保证升级应用时不会中断服务的提供？ 如何监控容器的运行状况？ 如何批量操作容器中的应用？ &amp;hellip;&amp;hellip; 解决这些问题所需要的就是容器编排技术，k8s是当前流行的大规模容器编排系统。
 服务发现和负载均衡。使用DNS名称或ip地址公开容器，k8s可以负载均衡并分配网络流量。 存储编排。允许自动挂载所选择的存储系统，如本地存储、公共云提供商等。 自动部署和回滚。可以自动化k8s创建新容、删除现有容器并将资源用于新容器 自动装箱计算。k8s可以管理容器所需的cpu和内存(RAM) 自我修复。 密钥和配置管理。k8s允许存储和管理敏感信息，可以在不重建容器镜像的情况下部署和更新密钥和应用程序配置，无需在堆栈配置中暴露密钥。 k8s提供了弹性运行分布式系统框架，满足扩展要求、故障转移、部署模式等。 架构 https://kubernetes.io/docs/concepts/overview/components/ 集群部署 k8s的集群创建需要最少三台机器，我在阿里云购买了三台centos服务器，对于服务器有以下要求。
 2cpu或更多 2GB或更多RAM 机器间可以互相通信、不能有重复的主机名、mac地址 禁用交换分区 对于三台服务器，创建了网段为171.31.0.0/16的专用网络，和网段为171.31.0.0/24的交换机，并让三台服务器位于该专用网络和交换机下。
 以下命令默认在所有机器中都要执行
-1. 安装kubeadm 配置基础环境 #各个机器设置自己的域名 hostnamectl set-hostname xxxx # 刷新，显示主机名 bash # 将 SELinux 设置为 permissive 模式（相当于将其禁用） sudo setenforce 0 sudo sed -i &amp;#39;s/^SELINUX=enforcing$/SELINUX=permissive/&amp;#39; /etc/selinux/config #关闭swap swapoff -a sed -ri &amp;#39;s/.*swap.*/#&amp;amp;/&amp;#39; /etc/fstab #允许 iptables 检查桥接流量 cat &amp;lt;&amp;lt;EOF | sudo tee /etc/modules-load.d/k8s.conf br_netfilter EOF cat &amp;lt;&amp;lt;EOF | sudo tee /etc/sysctl.</description>
-    </item>
-    
-    <item>
-      <title>自动化流水线如何构建项目</title>
-      <link>https://zerlina-ysl.github.io/blog/how_bytecycle_run/</link>
-      <pubDate>Sat, 19 Nov 2022 23:15:09 +0800</pubDate>
-      
-      <guid>https://zerlina-ysl.github.io/blog/how_bytecycle_run/</guid>
-      <description>自动化流水线如何构建项目并运行？
+1. 安装kubeadm 配置基础环境 #各个机器设置自己的域名 hostnamectl set-hostname xxxx # 刷新，显示主机名 bash # 将 SELinux 设置为 permissive 模式（相当于将其禁用） sudo setenforce 0 sudo sed -i &amp;#39;s/^SELINUX=enforcing$/SELINUX=permissive/&amp;#39; /etc/selinux/config #关闭swap swapoff -a sed -ri &amp;#39;s/.*swap.*/#&amp;amp;/&amp;#39; /etc/fstab #允许 iptables 检查桥接流量 cat &amp;lt;&amp;lt;EOF | sudo tee /etc/modules-load.d/k8s.conf br_netfilter EOF cat &amp;lt;&amp;lt;EOF | sudo tee /etc/sysctl.</description></item><item><title>自动化流水线如何构建项目</title><link>https://zerlina-ysl.github.io/blog/how_bytecycle_run/</link><pubDate>Sat, 19 Nov 2022 23:15:09 +0800</pubDate><guid>https://zerlina-ysl.github.io/blog/how_bytecycle_run/</guid><description>自动化流水线如何构建项目并运行？
 DevOps（Development和Operations的组合词）是一种重视“软件开发人员（Dev）”和“IT运维技术人员（Ops）”之间沟通合作的文化、运动或惯例。透过自动化“软件交付”和“架构变更”的流程，来使得构建、测试、发布软件能够更加地快捷、频繁和可靠。
 SourceControlManagement 代码发布管理平台 拉取源代码，运行指定的build脚本(如 sh build.sh），将打包后的output目录下的内容打包成tar包并上传，生成可以在线上运行的代码或资源。
 CloudEngine云引擎 容器发布和管理平台，基于k8s。 到scm仓库拉取tar的压缩包，根据配置生成用于构建的dockerFile，构建docker镜像,挂在宿主机上，启动服务，为服务创建唯一标识（psm)进行后续的管理。部署时通过k8s调度到某个node的pod，下载服务镜像。
@@ -102,16 +60,7 @@ ApiGeteWay 以API为核心，提供流量调度、限流、降级、服务治理
 LoadBalance 管理服务域名流量入口的七层负载均衡服务。
 用户可以在TLB平台为自己的服务配置对外的域名从而完成流量接入。支持对域名进行匹配，如正则匹配、自定义匹配等，将访问域名的流量通过不同路由分发到对应的后端psm服务。
 参考 相爱相杀：Servicemesh和API Gateway关系深度探讨：https://skyao.io/post/202004-servicemesh-and-api-gateway/
-蚂蚁金服 API Gateway Mesh 思考与实践：https://www.infoq.cn/article/azCFGyTDGakZqaLEEDMN</description>
-    </item>
-    
-    <item>
-      <title>浅谈微服务架构</title>
-      <link>https://zerlina-ysl.github.io/blog/microservice/</link>
-      <pubDate>Fri, 18 Nov 2022 23:06:45 +0800</pubDate>
-      
-      <guid>https://zerlina-ysl.github.io/blog/microservice/</guid>
-      <description>是什么？ 微服务以专注于单一责任与功能的小型功能区块为基础，利用模块化组合出复杂的大型应用程序，各区块可以使用与语言无关的api相互通讯。 服务框架的构建是一个持续演进的过程。
+蚂蚁金服 API Gateway Mesh 思考与实践：https://www.infoq.cn/article/azCFGyTDGakZqaLEEDMN</description></item><item><title>浅谈微服务架构</title><link>https://zerlina-ysl.github.io/blog/microservice/</link><pubDate>Fri, 18 Nov 2022 23:06:45 +0800</pubDate><guid>https://zerlina-ysl.github.io/blog/microservice/</guid><description>是什么？ 微服务以专注于单一责任与功能的小型功能区块为基础，利用模块化组合出复杂的大型应用程序，各区块可以使用与语言无关的api相互通讯。 服务框架的构建是一个持续演进的过程。
 单体架构 最初的服务，如实现一个小说app，我们会把所有的功能都实现在一个程序，将各种功能按照高内聚低耦合的理念划分成多个模块(书成模块、登陆模块、书架模块等等…)。一个服务就是一个应用。
 随着访问量增多，服务器压力变大，为了支持业务发展，首先选择了最直接的方法—加机器。
 因此需要负载均衡来支持流量增长。所有的请求需要通过一层负载均衡，再打到最终的服务上。
@@ -126,22 +75,9 @@ LoadBalance 管理服务域名流量入口的七层负载均衡服务。
 RPC Server 提供服务，在启动时，根据服务发布文件 server.xml 中的配置的信息，向 Registry 注册自身服务，并向 Registry 定期发送心跳汇报存活状态。
 RPC Client 调用服务，在启动时，根据服务引用文件 client.xml 中配置的信息，向 Registry 订阅服务，把 Registry 返回的服务节点列表缓存在本地内存中，并与 RPC Sever 建立连接。
 当 RPC Server 节点发生变更时，Registry 会同步变更，RPC Client 感知后会刷新本地内存中缓存的服务节点列表。
-RPC Client 从本地缓存的服务节点列表中，基于负载均衡算法选择一台 RPC Sever 发起调用。</description>
-    </item>
-    
-    <item>
-      <title>使用git rebase合并冲突</title>
-      <link>https://zerlina-ysl.github.io/blog/git_rebase/</link>
-      <pubDate>Tue, 15 Nov 2022 00:18:23 +0800</pubDate>
-      
-      <guid>https://zerlina-ysl.github.io/blog/git_rebase/</guid>
-      <description>今天在公司使用git rebase master解冲突失败，同事悉心教我，下来再研究一下。
+RPC Client 从本地缓存的服务节点列表中，基于负载均衡算法选择一台 RPC Sever 发起调用。</description></item><item><title>使用git rebase合并冲突</title><link>https://zerlina-ysl.github.io/blog/git_rebase/</link><pubDate>Tue, 15 Nov 2022 00:18:23 +0800</pubDate><guid>https://zerlina-ysl.github.io/blog/git_rebase/</guid><description>今天在公司使用git rebase master解冲突失败，同事悉心教我，下来再研究一下。
 git rebase master 回退分支 这一步可以跳过，只是我错误rebase操作导致目前分支代码不正常，需要先回滚代码。
 git log commit b77bd104afddea0cb0c861dd03ecd3350848xxxx (HEAD -&amp;gt; i18n_author_guide, origin/i18n_author_guide) Author: lishenyu &amp;lt;lishenyu@xx.com&amp;gt; Date: Mon Nov 14 20:16:42 2022 +0800 fix: rebase master commit 1afc280edcc522f1749112476a0406ba0683xxxx Author: zheng &amp;lt;zheng@xx.com&amp;gt; Date: Wed Nov 9 14:14:16 2022 +0800 fix: idl更新 可以看到，我需要通过logID回退到历史版本。
 git reset --hard 1afc280edcc522f1749112476a0406ba0683xxxx HEAD is now at 1afc280 fix: idl更新 git reset实现回退操作。首先需要明确三个区域：工作区/ 暂存区/ Repository。
 我们对工作区中的代码进行修改，使用git add .将修改的所有代码添加到暂存区，使用git push将暂存区中的代码提交到远程的Repository。
-–hard 撤销工作区所有未提交修改，将暂存区和工作区都回到上一个版本，删除之前的提交信息 –soft 保留工作目录中的内容，把新内容放置在暂存区。 –mixed 所有修改放在工作目录 ⚠️：git reset后再次push会引发冲突，需要push -f 1.</description>
-    </item>
-    
-  </channel>
-</rss>
+–hard 撤销工作区所有未提交修改，将暂存区和工作区都回到上一个版本，删除之前的提交信息 –soft 保留工作目录中的内容，把新内容放置在暂存区。 –mixed 所有修改放在工作目录 ⚠️：git reset后再次push会引发冲突，需要push -f 1.</description></item></channel></rss>
