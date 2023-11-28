@@ -1,0 +1,54 @@
+<!doctype html><html lang=en-us><head><meta http-equiv=X-Clacks-Overhead content="GNU Terry Pratchett"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel="shortcut icon" href=https://zerlina-ysl.github.io/img/favicon.png><title>记录mit6.824-lab1 | ᕕ( ᐛ )ᕗ xiaoli's blog</title>
+<meta name=title content="记录mit6.824-lab1"><meta name=description content="环境准备 https://pdos.csail.mit.edu/6.824/notes/l01.txt
+http://nil.csail.mit.edu/6.824/2022/labs/lab-mr.html
+Go version:http://nil.csail.mit.edu/6.824/2022/labs/go.html
+本质 建议把示例中的调用逻辑整理清晰，并把相关的描述文档多看几遍。
+lab1本质上由单worker单coordinator变成三个worker单coodinator，处理好并发安全就可以。
+go语言处理并发安全无非那老一套：使用channel通信；加锁。
+流程图 使用飞书画的，好可爱!!!
+脚本测试过程 // 构建插件 go build -race -buildmode=plugin ../mrapps/wc.go rm mr-out* // 每个文件就是map的输入 go run -race mrcoordinator.go pg-*.txt go build -race -buildmode=plugin ../mrapps/wc.go go run -race mrworker.go wc.so cat mr-out-* | sort | more -------- // 也可以直接运行： bash test-mr.sh 测试共包含8个，全部PASS算通过；建议将不通过的脚本单独复制出来测试。
+代码 https://github.com/Zerlina-ysl/6.824
+参考 https://blog.csdn.net/weixin_45938441/article/details/124018485"><meta name=keywords content="mit6.824,"><meta property="og:title" content="记录mit6.824-lab1"><meta property="og:description" content="环境准备 https://pdos.csail.mit.edu/6.824/notes/l01.txt
+http://nil.csail.mit.edu/6.824/2022/labs/lab-mr.html
+Go version:http://nil.csail.mit.edu/6.824/2022/labs/go.html
+本质 建议把示例中的调用逻辑整理清晰，并把相关的描述文档多看几遍。
+lab1本质上由单worker单coordinator变成三个worker单coodinator，处理好并发安全就可以。
+go语言处理并发安全无非那老一套：使用channel通信；加锁。
+流程图 使用飞书画的，好可爱!!!
+脚本测试过程 // 构建插件 go build -race -buildmode=plugin ../mrapps/wc.go rm mr-out* // 每个文件就是map的输入 go run -race mrcoordinator.go pg-*.txt go build -race -buildmode=plugin ../mrapps/wc.go go run -race mrworker.go wc.so cat mr-out-* | sort | more -------- // 也可以直接运行： bash test-mr.sh 测试共包含8个，全部PASS算通过；建议将不通过的脚本单独复制出来测试。
+代码 https://github.com/Zerlina-ysl/6.824
+参考 https://blog.csdn.net/weixin_45938441/article/details/124018485"><meta property="og:type" content="article"><meta property="og:url" content="https://zerlina-ysl.github.io/blog/6.824_lab1/"><meta property="article:section" content="blog"><meta property="article:published_time" content="2023-11-27T23:54:28+08:00"><meta property="article:modified_time" content="2023-11-27T23:54:28+08:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="记录mit6.824-lab1"><meta name=twitter:description content="环境准备 https://pdos.csail.mit.edu/6.824/notes/l01.txt
+http://nil.csail.mit.edu/6.824/2022/labs/lab-mr.html
+Go version:http://nil.csail.mit.edu/6.824/2022/labs/go.html
+本质 建议把示例中的调用逻辑整理清晰，并把相关的描述文档多看几遍。
+lab1本质上由单worker单coordinator变成三个worker单coodinator，处理好并发安全就可以。
+go语言处理并发安全无非那老一套：使用channel通信；加锁。
+流程图 使用飞书画的，好可爱!!!
+脚本测试过程 // 构建插件 go build -race -buildmode=plugin ../mrapps/wc.go rm mr-out* // 每个文件就是map的输入 go run -race mrcoordinator.go pg-*.txt go build -race -buildmode=plugin ../mrapps/wc.go go run -race mrworker.go wc.so cat mr-out-* | sort | more -------- // 也可以直接运行： bash test-mr.sh 测试共包含8个，全部PASS算通过；建议将不通过的脚本单独复制出来测试。
+代码 https://github.com/Zerlina-ysl/6.824
+参考 https://blog.csdn.net/weixin_45938441/article/details/124018485"><meta itemprop=name content="记录mit6.824-lab1"><meta itemprop=description content="环境准备 https://pdos.csail.mit.edu/6.824/notes/l01.txt
+http://nil.csail.mit.edu/6.824/2022/labs/lab-mr.html
+Go version:http://nil.csail.mit.edu/6.824/2022/labs/go.html
+本质 建议把示例中的调用逻辑整理清晰，并把相关的描述文档多看几遍。
+lab1本质上由单worker单coordinator变成三个worker单coodinator，处理好并发安全就可以。
+go语言处理并发安全无非那老一套：使用channel通信；加锁。
+流程图 使用飞书画的，好可爱!!!
+脚本测试过程 // 构建插件 go build -race -buildmode=plugin ../mrapps/wc.go rm mr-out* // 每个文件就是map的输入 go run -race mrcoordinator.go pg-*.txt go build -race -buildmode=plugin ../mrapps/wc.go go run -race mrworker.go wc.so cat mr-out-* | sort | more -------- // 也可以直接运行： bash test-mr.sh 测试共包含8个，全部PASS算通过；建议将不通过的脚本单独复制出来测试。
+代码 https://github.com/Zerlina-ysl/6.824
+参考 https://blog.csdn.net/weixin_45938441/article/details/124018485"><meta itemprop=datePublished content="2023-11-27T23:54:28+08:00"><meta itemprop=dateModified content="2023-11-27T23:54:28+08:00"><meta itemprop=wordCount content="54"><meta itemprop=keywords content="mit6.824,"><meta name=referrer content="no-referrer-when-downgrade"><style>body{font-family:Verdana,sans-serif;margin:auto;padding:20px;max-width:720px;text-align:left;background-color:#fff;word-wrap:break-word;overflow-wrap:break-word;line-height:1.5;color:#444}h1,h2,h3,h4,h5,h6,strong,b{color:#222}a{color:#3273dc}.title{text-decoration:none;border:0}.title span{font-weight:400}nav a{margin-right:10px}textarea{width:100%;font-size:16px}input{font-size:16px}content{line-height:1.6}table{width:100%}img{max-width:100%}code{padding:2px 5px;background-color:#f2f2f2}pre code{color:#222;display:block;padding:20px;white-space:pre-wrap;font-size:14px;overflow-x:auto}div.highlight pre{background-color:initial;color:initial}div.highlight code{background-color:unset;color:unset}blockquote{border-left:1px solid #999;color:#222;padding-left:20px;font-style:italic}footer{padding:25px;text-align:center}.helptext{color:#777;font-size:small}.errorlist{color:#eba613;font-size:small}ul.blog-posts{list-style-type:none;padding:unset}ul.blog-posts li{display:flex}ul.blog-posts li span{flex:0 0 130px}ul.blog-posts li a:visited{color:#8b6fcb}@media(prefers-color-scheme:dark){body{background-color:#333;color:#ddd}h1,h2,h3,h4,h5,h6,strong,b{color:#eee}a{color:#8cc2dd}code{background-color:#777}pre code{color:#ddd}blockquote{color:#ccc}textarea,input{background-color:#252525;color:#ddd}.helptext{color:#aaa}}</style></head><body><header><a href=/ class=title><h2>ᕕ( ᐛ )ᕗ xiaoli's blog</h2></a><nav><a href=/>Home</a>
+<a href=/diary/>Diary</a>
+<a href=/blog>Blog</a></nav></header><main><h1>记录mit6.824-lab1</h1><p><i><time datetime=2023-11-27 pubdate>27 Nov, 2023</time></i></p><content><h2 id=环境准备>环境准备</h2><p><a href=https://pdos.csail.mit.edu/6.824/notes/l01.txt>https://pdos.csail.mit.edu/6.824/notes/l01.txt</a></p><p><a href=http://nil.csail.mit.edu/6.824/2022/labs/lab-mr.html>http://nil.csail.mit.edu/6.824/2022/labs/lab-mr.html</a></p><p>Go version:http://nil.csail.mit.edu/6.824/2022/labs/go.html</p><h2 id=本质>本质</h2><p>建议把示例中的调用逻辑整理清晰，并把相关的描述文档多看几遍。</p><p>lab1本质上由单worker单coordinator变成三个worker单coodinator，处理好并发安全就可以。</p><p>go语言处理并发安全无非那老一套：使用channel通信；加锁。</p><h2 id=流程图>流程图</h2><blockquote><p>使用飞书画的，好可爱!!!</p></blockquote><p><img src=lab1.png alt></p><h2 id=脚本测试过程>脚本测试过程</h2><pre tabindex=0><code>// 构建插件
+go build -race -buildmode=plugin ../mrapps/wc.go
+
+rm mr-out*
+    // 每个文件就是map的输入
+go run -race mrcoordinator.go pg-*.txt
+
+go build -race -buildmode=plugin ../mrapps/wc.go
+go run -race mrworker.go wc.so
+
+cat mr-out-* | sort | more
+--------
+// 也可以直接运行：
+bash test-mr.sh
+</code></pre><p>测试共包含8个，全部PASS算通过；建议将不通过的脚本单独复制出来测试。</p><h2 id=代码>代码</h2><p><a href=https://github.com/Zerlina-ysl/6.824>https://github.com/Zerlina-ysl/6.824</a></p><h3 id=参考>参考</h3><p><a href=https://blog.csdn.net/weixin_45938441/article/details/124018485>https://blog.csdn.net/weixin_45938441/article/details/124018485</a></p></content><p><a href=https://zerlina-ysl.github.io/tags/mit6.824/>#mit6.824</a></p></main><footer>Made with <a href=https://github.com/janraasch/hugo-bearblog/>Hugo ʕ•ᴥ•ʔ Bear</a></footer></body></html>
