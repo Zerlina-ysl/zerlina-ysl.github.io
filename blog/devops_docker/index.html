@@ -1,0 +1,133 @@
+<!doctype html><html lang=en-us><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/monokai.min.css><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js></script><script src=https://cdn.bootcss.com/highlight.js/9.12.0/languages/django.min.js></script><script src=https://cdn.bootcss.com/highlight.js/9.12.0/languages/dockerfile.min.js></script><script src=https://cdn.bootcss.com/highlight.js/9.12.0/languages/vim.min.js></script><script src=https://cdn.bootcss.com/highlight.js/9.12.0/languages/yaml.min.js></script><script src=https://cdn.bootcss.com/highlight.js/9.12.0/languages/gradle.min.js></script><script src=https://cdn.bootcss.com/highlight.js/9.12.0/languages/go.min.js></script><script>hljs.initHighlightingOnLoad()</script><meta http-equiv=X-Clacks-Overhead content="GNU Terry Pratchett"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel="shortcut icon" href=https://zerlina-ysl.github.io/img/favicon.png><title>云原生之docker入门 | ᕕ( ᐛ )ᕗ xiaoli's blog</title>
+<meta name=title content="云原生之docker入门"><meta name=description content="参照尚硅谷的《云原生Java架构师的第一课K8s+Docker+KubeSphere+DevOps》"><meta name=keywords content="docker,"><meta property="og:title" content="云原生之docker入门"><meta property="og:description" content="参照尚硅谷的《云原生Java架构师的第一课K8s+Docker+KubeSphere+DevOps》"><meta property="og:type" content="article"><meta property="og:url" content="https://zerlina-ysl.github.io/blog/devops_docker/"><meta property="article:section" content="blog"><meta property="article:published_time" content="2023-02-21T21:03:09+08:00"><meta property="article:modified_time" content="2023-02-21T21:03:09+08:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="云原生之docker入门"><meta name=twitter:description content="参照尚硅谷的《云原生Java架构师的第一课K8s+Docker+KubeSphere+DevOps》"><meta itemprop=name content="云原生之docker入门"><meta itemprop=description content="参照尚硅谷的《云原生Java架构师的第一课K8s+Docker+KubeSphere+DevOps》"><meta itemprop=datePublished content="2023-02-21T21:03:09+08:00"><meta itemprop=dateModified content="2023-02-21T21:03:09+08:00"><meta itemprop=wordCount content="439"><meta itemprop=keywords content="docker,"><meta name=referrer content="no-referrer-when-downgrade"><style>body{font-family:Verdana,sans-serif;margin:auto;padding:20px;max-width:720px;text-align:left;background-color:#fff;word-wrap:break-word;overflow-wrap:break-word;line-height:1.5;color:#444}h1,h2,h3,h4,h5,h6,strong,b{color:#222}a{color:#3273dc}.title{text-decoration:none;border:0}.title span{font-weight:400}nav a{margin-right:10px}textarea{width:100%;font-size:16px}input{font-size:16px}content{line-height:1.6}table{width:100%}img{max-width:100%}code{padding:2px 5px;background-color:#f2f2f2}pre code{color:#222;display:block;padding:20px;white-space:pre-wrap;font-size:14px;overflow-x:auto}div.highlight pre{background-color:initial;color:initial}div.highlight code{background-color:unset;color:unset}blockquote{border-left:1px solid #999;color:#222;padding-left:20px;font-style:italic}footer{padding:25px;text-align:center}.helptext{color:#777;font-size:small}.errorlist{color:#eba613;font-size:small}ul.blog-posts{list-style-type:none;padding:unset}ul.blog-posts li{display:flex}ul.blog-posts li span{flex:0 0 130px}ul.blog-posts li a:visited{color:#8b6fcb}@media(prefers-color-scheme:dark){body{background-color:#030101;color:#ddd}h1,h2,h3,h4,h5,h6,strong,b{color:#eee}a{color:#8cc2dd}code{background-color:#777}pre code{color:#ddd}blockquote{color:#ccc}textarea,input{background-color:#252525;color:#ddd}.helptext{color:#aaa}}</style></head><body><header><a href=/ class=title><h2>ᕕ( ᐛ )ᕗ xiaoli's blog</h2></a><nav><a href=/>Home</a>
+<a href=/diary/>Diary</a>
+<a href=/blog>Blog</a></nav></header><main><h1>云原生之docker入门</h1><p><i><time datetime=2023-02-21 pubdate>21 Feb, 2023
+</time><span class=post-word-count>; 439 words</span></i></p><content><h2 id=是什么>是什么</h2><p>通过对应用组件的封装、分发、部署、运行等生命周期的管理，使用户的应用程序及其运行环境能做到<strong>一次镜像,处处运行</strong>。</p><h2 id=为什么>为什么</h2><p>传统虚拟机技术基于安装在主操作系统上的虚拟机管理系统（如VirtualBox、VMware等），创建虚拟机（虚拟出各种硬件），在虚拟机上安装从操作系统，在从操作系统中安装部署各种应用。</p><p>缺点：资源占用多、冗余步骤多、启动慢</p><p>Linux容器不是模拟一个完整的操作系统，而是对进程进行隔离。有了容器，就可以将软件运行所需的所有资源打包到一个隔离的容器中。容器与虚拟机不同，不需要捆绑一整套操作系统，只需要软件工作所需的库资源和设置。系统因此而变得高效轻量并保证部署在任何环境中的软件都能始终如一的运行。</p><h2 id=主要概念>主要概念</h2><p><img src=architecture.svg alt></p><p>容器：容器可以独立运行应用，应用程序或服务运行在容器里面，容器就类似于一个虚拟化的运行环境，容器是用镜像创建的运行实例。每个容器相互隔离。</p><p>镜像：一个只读的模板。镜像可以用来创建Docker容器，一个镜像可以创建多个容器。一般会把可运行系统打包成一个镜像。</p><p>仓库：集中存放镜像文件的场所。https://hub.docker.com/</p><p>docker_host：安装docker的主机</p><p>docker deamon： 守护进程，运行在docker主机上的docker后台进程。</p><p>​ 守护进程：在后台运行并提供某种服务的进程，它独立于控制终端并且周期性地执行某种任务或等待处理某些发生的事件。</p><p>docker本质上是一个容器运行载体，我们把应用程序和配置依赖打包好形成一个可交付的运行环境，这个运行环境就是image镜像文件，通过该镜像文件生成docker容器实例。</p><p><img src=flow.png alt></p><ol><li>从 Docker Registry 中下载镜像，并通过镜像管理驱动 Graph Driver 将下载镜像以 Graph 的形式存储</li><li>通过网络管理驱动 Network driver 创建并配置 Docker 容器网络环境</li><li>通过 Exec driver 来完成限制 Docker 容器运行资源或执行用户指令等</li><li>Libcontainer 是一项独立的容器管理包，Network driver 以及 Exec driver 都是通过Libcontainer 来实现具体对容器进行的操作</li></ol><h2 id=docker命令实战>docker命令实战</h2><h3 id=安装docker>安装docker</h3><blockquote><p>其他系统参照如下文档
+<a href=https://docs.docker.com/engine/install/centos/>https://docs.docker.com/engine/install/centos/</a></p></blockquote><ol><li>移除其他docker安装包</li></ol><pre tabindex=0><code>sudo yum remove docker \
+                  docker-client \
+                  docker-client-latest \
+                  docker-common \
+                  docker-latest \
+                  docker-latest-logrotate \
+                  docker-logrotate \
+                  docker-engine
+</code></pre><ol start=2><li>配置yum源</li></ol><pre tabindex=0><code>sudo yum install -y yum-utils
+sudo yum-config-manager \
+--add-repo \
+http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+</code></pre><ol start=3><li>安装docker。docker-ce是社区版，docker-ce-cli是操作docker的命令行工具，containerd.io是docker的容器化工具。</li></ol><pre tabindex=0><code>sudo yum install -y docker-ce docker-ce-cli containerd.io
+</code></pre><ol start=4><li>配置自启动</li></ol><pre tabindex=0><code>systemctl enable docker --now
+</code></pre><ol start=5><li>配置镜像加速，参考<code>https://cr.console.aliyun.com/cn-beijing/instances/mirrors</code></li></ol><pre tabindex=0><code>sudo mkdir -p /etc/docker
+sudo tee /etc/docker/daemon.json &lt;&lt;-&#39;EOF&#39;
+{
+  &#34;registry-mirrors&#34;: [&#34;https://rvzmkti6.mirror.aliyuncs.com&#34;],
+  &#34;exec-opts&#34;: [&#34;native.cgroupdriver=systemd&#34;],
+  &#34;log-driver&#34;: &#34;json-file&#34;,
+  &#34;log-opts&#34;: {
+    &#34;max-size&#34;: &#34;100m&#34;
+  },
+  &#34;storage-driver&#34;: &#34;overlay2&#34;
+}
+EOF
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+</code></pre><h3 id=常用命令>常用命令</h3><p><img src=content/blog/devops_docker/image.png alt>
+可以访问<code>https://hub.docker.com/</code>镜像仓库寻找镜像。</p><h4 id=拉取镜像>拉取镜像</h4><pre tabindex=0><code>docker pull nginx   # 最新版本
+
+docker pull nginx:1.20.1 # 指定版本
+
+ # 列出本地所有镜像。
+ # 可以查询到镜像的tag、image id、size等信息
+docker images
+
+docker rmi nginx # 删除镜像，参数需要是镜像名:镜像版本号/镜像id
+</code></pre><h4 id=启动容器>启动容器</h4><pre tabindex=0><code>docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
+
+# 当前正在运行的应用容器信息
+docker ps
+
+# 显示所有的容器
+docker ps -a
+
+# -d:后台运行
+# --name=xx 自定义名称
+# --restart=always 开机自启动
+# 返回的序列号其实就是containerID
+docker run --name=mynginx -d --restart=always nginx
+
+# 镜像name不能重复
+
+docker rm containerID/name # 删除应用容器,可以使用-f强制删除
+
+docker stop containerID/name # 停止应用
+
+docker start containerID/name # 启动应用
+
+docker update containerID/name --restart=always # 使用update更新配置项，但是无法修改端口配置
+</code></pre><p>目前nginx在云容器的80端口工作，无法通过公网ip访问，但是可以使用docker进行端口映射。<code>docker run --name=mynginx -p 88:80 nginx</code>。<br>docker从镜像仓库拉取nginx镜像，使用docker run可以运行nginx应用，也可以使用exec进入应用配置。</p><h4 id=docker-run>docker run</h4><ul><li><p><code>--name</code>：为容器指定一个名称</p></li><li><p><code>-d</code>：后台运行容器并返回容器ID，也即启动守护式容器</p></li><li><p><code>-i</code>：以交互模式（interactive）运行容器，通常与<code>-t</code>同时使用</p></li><li><p><code>-t</code>：为容器重新分配一个伪输入终端（tty），通常与<code>-i</code>同时使用。也即启动交互式容器（前台有伪终端，等待交互）</p></li><li><p><code>-e</code>：为容器添加环境变量</p><ul><li><code>discovery.type=single-node</code> 单节点模式运行</li></ul></li><li><p><code>-P</code>：随机端口映射。将容器内暴露的所有端口映射到宿主机随机端口</p></li><li><p><code>-p</code>：指定端口映射</p><ul><li><p><code>-p hostPort:containerPort</code>：端口映射，例如<code>-p 8080:80</code></p></li><li><p><code>-p ip:hostPort:containerPort</code>：配置监听地址，例如 <code>-p 10.0.0.1:8080:80</code></p></li><li><p><code>-p ip::containerPort</code>：随机分配端口，例如 <code>-p 10.0.0.1::80</code></p></li><li><p><code>-p hostPort1:containerPort1 -p hostPort2:containerPort2</code>：指定多个端口映射，例如<code>-p 8080:80 -p 8888:3306</code></p></li></ul></li><li><p><code>--net</code> : 指定网络配置。</p></li><li><p><code>--privileged</code> ：容器将拥有宿主机上的很多能力</p></li></ul><h4 id=修改容器应用>修改容器应用</h4><pre tabindex=0><code># 进入容器应用的/bin/bash目录
+docker exec -it [containerID/name] /bin/bash 
+
+exit # 离开应用
+
+# 挂载数据
+docker run --name=mynginx -d -p 88:80 \
+-v /data/html:/usr/share/nginx/html:ro \  
+nginx
+# 把nginx应用的/usr/share/nginx/html文件挂载到云容器的/data/html文件，权限设置为只读模式,表示容器内部不能修改。此时修改外部文件其实就是修改内部文件
+需要注意：挂载中设置的参数文件需要已存在
+
+# 复制应用中指定位置的文件到容器文件中，容器文件和镜像文件可以互相复制
+docker cp [containerID/name]:/etc/nginx/nginx.conf /data/conf/nginx.conf 
+</code></pre><h4 id=提交镜像>提交镜像</h4><pre tabindex=0><code>docker commit [OPTIONS] CONTAINER [REPOSITORY[:TAG]] #提交到本地仓库,提交后本地仓库命名repository:tag(类似git)
+[OPTIONS]
+-a author
+-m commit message
+
+docker save [OPTIONS] IMAGE [IMAGE...]
+[OPTIONS]
+-o 后接文件名，如abc.tar,把镜像保存成压缩实体文件，方便传输
+
+docker load -i abc.tar 加载接收的镜像文件
+
+将镜像推送到远程仓库需要先在docker hub创建对应的repository
+docker tag local-image:tagname new-repo:tagname #将本地镜像名称改成远程镜像名称
+
+docker login # 登陆docker hub
+
+docker push new-repo:tagname # 将镜像推送到远程仓库
+
+docker logout
+</code></pre><h4 id=常用命令-1>常用命令</h4><pre tabindex=0><code>docker logs containerID/name # 查看镜像日志
+</code></pre><h3 id=应用的打包和发布>应用的打包和发布</h3><p>程序被打成可执行的jar包，终端输入<code>java -jar xx.jar</code>即可运行应用。但是这种运行的前提是需要拥有java运行环境。<br>此时使用docker，任何应用都是镜像，解决跨语言下的程序运行问题。</p><ol><li>编写Dockerfile。</li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-dockerfile data-lang=dockerfile><span style=display:flex><span><span style=color:#66d9ef>FROM</span><span style=color:#e6db74> unitfinance/jdk17-sbt-scala:latest  # 程序的运行环境</span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>LABEL</span> maintainer<span style=color:#f92672>=</span>xiaoli  <span style=color:#75715e># 作者</span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>  <span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>COPY</span> target/*.jar /app.jar  <span style=color:#75715e># 将程序复制到容器</span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>  <span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>ENTRYPOINT</span> [<span style=color:#e6db74>&#34;java&#34;</span>,<span style=color:#e6db74>&#34;-jar&#34;</span>,<span style=color:#e6db74>&#34;demo-0.0.1-SNAPSHOT.jar&#34;</span>] <span style=color:#75715e># 运行命令</span><span style=color:#960050;background-color:#1e0010>
+</span></span></span></code></pre></div><ol start=2><li>将jar包上传到docker容器。注意-r是递归复制目录
+<img src=testDocker.png alt></li><li>在docker容器中构建镜像<code>docker build -t java-demo:v1.0 -f Dockerfile .</code>。构建成功后可以使用<code>docker images</code>查看镜像。
+<img src=docker_build.png alt>镜像有752mb，是因为携带了jdk17的基础环境。</li><li><code>docker run -d -p 8080:8080 java-demo:v1.0</code>。启动镜像。</li><li>docker ps<code> 查看容器是否启动成功。启动后就可以正常运行应用。</code></li><li>docker logs`查看程序的运行日志。</li></ol><p>在后续的流程中，可以将镜像上传到docker hub,只需要从dockerhub中拉取镜像，不同的服务器就可以实现镜像的共享，使用docker run,就可以跨语言的运行应用。<br>其实大多数人谈论 Docker 时说的是 Docker Engine，这只是一个构建和运行的容器。</p><p>在运行容器前需要编写Docker File，通过 dockerFile 生成镜像，然后才能运行 Docker 容器。</p><p>Docker File 定义了运行镜像（image）所需的所有内容，包括操作系统和软件安装位置。一般情况下都不需要从头开始编写 Docker File，在 Docker Hub 中有来自世界各地的工程师编写好的镜像，可以基于此修改。</p><h4 id=docker-file>Docker File</h4><p>docker file是用来构造docker镜像的文本文件，由多条构建镜像所需的指令和参数构成的脚本。
+保留字指令大写字母，后面要至少跟随一个参数，每条指令会创建一个新的镜像层并对镜像进行提交。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>FROM 指定基础镜像，当前镜像基于该镜像构建
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>MAINTAINER 镜像维护者的姓名和邮箱地址
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>RUN 容器构建（docker build<span style=color:#f92672>)</span>时需要运行的命令
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>EXPOSE 当前容器对外暴露的端口
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>WORKDIR 指定在容器创建后，终端默认登陆的工作目录
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>USER 镜像执行用户，默认root
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>ENV 镜像运行时环境配置
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>VOLUMN 容器卷，用于数据持久化
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>ADD 将宿主机目录下的文件拷贝到镜像并自动处理URL、解压tar压缩包。
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>COPY 类似于ADD，拷贝文件和目录到镜像。COPY src dst
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>CMD 容器启动后会执行的命令，多个CMD指令只有最后一个会生效。会被docker run后的参数取代。
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>EMTRYPOINT 指定容器启动要执行的指令。但不会被docker run后的参数取代，可以和CMD一起使用，此时CMD起到传递参数的作用。
+</span></span></code></pre></div><h4 id=docker-compose-容器编排>docker-compose 容器编排</h4><p>docker-compose负责对docker容器集群的快速编排，需要定义一个docker-compose.yml，定义多个关联容器之间的依赖关系，作为一组应用。<br>服务：应用容器实例。<br>工程：一组关联的应用容器组成完整项目单元。<br>配置docker-compose.yml后，使用<code>docker-compose up</code>启动运行整个应用程序。</p></content><p><a href=https://zerlina-ysl.github.io/tags/docker/>#docker</a></p></main><footer><script src=https://utteranc.es/client.js repo=Zerlina-ysl/zerlina-ysl.github.io issue-term=title theme=github-light crossorigin=anonymous async></script>Made with <a href=https://github.com/janraasch/hugo-bearblog/>Hugo ʕ•ᴥ•ʔ Bear</a></footer></body></html>

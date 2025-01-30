@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>docker on ᕕ( ᐛ )ᕗ xiaoli's blog</title><link>https://zerlina-ysl.github.io/tags/docker/</link><description>Recent content in docker on ᕕ( ᐛ )ᕗ xiaoli's blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 21 Feb 2023 21:03:09 +0800</lastBuildDate><atom:link href="https://zerlina-ysl.github.io/tags/docker/index.xml" rel="self" type="application/rss+xml"/><item><title>云原生之docker入门</title><link>https://zerlina-ysl.github.io/blog/devops_docker/</link><pubDate>Tue, 21 Feb 2023 21:03:09 +0800</pubDate><guid>https://zerlina-ysl.github.io/blog/devops_docker/</guid><description>是什么 通过对应用组件的封装、分发、部署、运行等生命周期的管理，使用户的应用程序及其运行环境能做到一次镜像,处处运行。
+为什么 传统虚拟机技术基于安装在主操作系统上的虚拟机管理系统（如VirtualBox、VMware等），创建虚拟机（虚拟出各种硬件），在虚拟机上安装从操作系统，在从操作系统中安装部署各种应用。
+缺点：资源占用多、冗余步骤多、启动慢
+Linux容器不是模拟一个完整的操作系统，而是对进程进行隔离。有了容器，就可以将软件运行所需的所有资源打包到一个隔离的容器中。容器与虚拟机不同，不需要捆绑一整套操作系统，只需要软件工作所需的库资源和设置。系统因此而变得高效轻量并保证部署在任何环境中的软件都能始终如一的运行。
+主要概念 容器：容器可以独立运行应用，应用程序或服务运行在容器里面，容器就类似于一个虚拟化的运行环境，容器是用镜像创建的运行实例。每个容器相互隔离。
+镜像：一个只读的模板。镜像可以用来创建Docker容器，一个镜像可以创建多个容器。一般会把可运行系统打包成一个镜像。
+仓库：集中存放镜像文件的场所。https://hub.docker.com/
+docker_host：安装docker的主机
+docker deamon： 守护进程，运行在docker主机上的docker后台进程。
+​ 守护进程：在后台运行并提供某种服务的进程，它独立于控制终端并且周期性地执行某种任务或等待处理某些发生的事件。
+docker本质上是一个容器运行载体，我们把应用程序和配置依赖打包好形成一个可交付的运行环境，这个运行环境就是image镜像文件，通过该镜像文件生成docker容器实例。
+从 Docker Registry 中下载镜像，并通过镜像管理驱动 Graph Driver 将下载镜像以 Graph 的形式存储 通过网络管理驱动 Network driver 创建并配置 Docker 容器网络环境 通过 Exec driver 来完成限制 Docker 容器运行资源或执行用户指令等 Libcontainer 是一项独立的容器管理包，Network driver 以及 Exec driver 都是通过Libcontainer 来实现具体对容器进行的操作 docker命令实战 安装docker 其他系统参照如下文档 https://docs.docker.com/engine/install/centos/
+移除其他docker安装包 sudo yum remove docker \ docker-client \ docker-client-latest \ docker-common \ docker-latest \ docker-latest-logrotate \ docker-logrotate \ docker-engine 配置yum源 sudo yum install -y yum-utils sudo yum-config-manager \ --add-repo \ http://mirrors.</description></item></channel></rss>
